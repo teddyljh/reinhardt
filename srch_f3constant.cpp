@@ -1,5 +1,6 @@
 /*/////////////////////////////////*/
 /* Michael's Code for generating sporadic Reinhardt Polygons, pqr method
+/* edited by Molly Feldman 
 /*//////////////////////////////*/
 
 #include <iostream>
@@ -8,7 +9,7 @@ using namespace std;
 int num = 0;
 const int p = 3; /*prime number 1 */
 const int q = 5; /*prime number 2 */
-const int r = 2; /*additional value, our n is of the form pqr */
+const int r = 3; /*additional value, our n is of the form pqr */
 const int n = p*q*r;
 int a[n], b[n], c[n], f3[n]; /*coefficient vectors, representing how we can generate the coefficients given our algorithms*/
 
@@ -17,7 +18,6 @@ void set(int*, int, int, int, int);
 void printVec(int*, int);
 void printGaps(int*, int);
 void printAns();
-void computeF3(int*);
 bool testC();
 void findB(int, int);
 void enumA(int);
@@ -27,7 +27,7 @@ bool hasPeriod(int*, int, int);
 
 /* runs the creation of the coefficient sequences*/
 int main() {
-    for (int i=0; i<n; i++) a[i] = b[i] = c[i] = 0;
+    for (int i=0; i<n; i++) a[i] = b[i] = c[i] = f3[i] = 0;
     set(a, n, q, 0, 1);
     enumA(q);
     return 0;
@@ -79,8 +79,21 @@ void findB(int prior, int k) {
 }
 
 bool testC() {
-    int offset = r*p;
-    set(f3, n, q, offset, 1);
+
+    //METHOD 1: RANDOM CHOICE OF f3
+    //int offset = r*p; //case where we set the offset so we get some sort of f3 result 
+    //set(f3, n, q, offset, 1);
+
+
+    //METHOD 2: CHOICE GIVEN IN 2014 PAPER
+    // -000+00-00+00-0 is the given coefficient sequence
+    f3[0] = -1;
+    f3[4] = 1;
+    f3[7] = -1;
+    f3[10] = 1;
+    f3[13] = -1; 
+
+
     
     for (int i=0; i<n; i++) c[i] = a[i] + b[i] + f3[i];
     int prior = 1;
@@ -94,23 +107,6 @@ bool testC() {
     return !isPeriodic(c, n);
 }
 
-void computeF3(int* v) {
-    
-    
-    
-
-
-   /*  holds f3 constant at f3(z) = 1-z 
-    f3[0] = 1;
-    f3[1] = -1;
-    for (i=2; i<n; i++) f3[i] = 0;
-
-    */
-
-
-
-
-}
 
 
 /****************************************************************/

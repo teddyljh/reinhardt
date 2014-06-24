@@ -8,16 +8,15 @@ using namespace std;
 int num = 0;
 const int p = 3; /*prime number 1 */
 const int q = 5; /*prime number 2 */
-const int r = 2; /*additional value, our n is of the form pqr */
+const int r = 3; /*additional value, our n is of the form pqr */
 const int n = p*q*r;
-int a[n], b[n], c[n], f3[n]; /*coefficient vectors, representing how we can generate the coefficients given our algorithms*/
+int a[n], b[n], c[n]; /*coefficient vectors, representing how we can generate the coefficients given our algorithms*/
 
 /* function declaration, most important are set, testC, findB, enumA, and hasPeriod */
 void set(int*, int, int, int, int);
 void printVec(int*, int);
 void printGaps(int*, int);
 void printAns();
-void computeF3(int*);
 bool testC();
 void findB(int, int);
 void enumA(int);
@@ -79,10 +78,8 @@ void findB(int prior, int k) {
 }
 
 bool testC() {
-    int offset = r*p;
-    set(f3, n, q, offset, 1);
     
-    for (int i=0; i<n; i++) c[i] = a[i] + b[i] + f3[i];
+    for (int i=0; i<n; i++) c[i] = a[i] + b[i];
     int prior = 1;
 
     for (int i=1; i<n; i++) {
@@ -92,24 +89,6 @@ bool testC() {
         }
     }
     return !isPeriodic(c, n);
-}
-
-void computeF3(int* v) {
-    
-    
-    
-
-
-   /*  holds f3 constant at f3(z) = 1-z 
-    f3[0] = 1;
-    f3[1] = -1;
-    for (i=2; i<n; i++) f3[i] = 0;
-
-    */
-
-
-
-
 }
 
 
