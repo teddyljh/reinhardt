@@ -60,7 +60,7 @@ void enumA(int i) {
 void findB(int prior, int k) {
     //cout << "in findB" << endl;
     if (k == n/r) {
-        cout << "printing" << endl;
+        //cout << "printing" << endl;
         if (testC()) printAns();
     } else if (a[k] == prior) {
         set(b, n, p, k, -prior);
