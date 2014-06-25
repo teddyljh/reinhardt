@@ -9,8 +9,9 @@ using namespace std;
 int num = 0;
 const int p = 3; /*prime number 1 */
 const int q = 5; /*prime number 2 */
-const int r = 3; /*additional value, our n is of the form pqr */
-const int n = p*q*r;
+const int r = 2; /*additional value, our n is of the form pqr */
+const int l = 11;
+const int n = p*q*l*r;
 int a[n], b[n], c[n], f3[n]; /*coefficient vectors, representing how we can generate the coefficients given our algorithms*/
 
 /* function declaration, most important are set, testC, findB, enumA, and hasPeriod */
@@ -18,7 +19,7 @@ void set(int*, int, int, int, int);
 void printVec(int*, int);
 void printGaps(int*, int);
 void printAns();
-void enumf3(int);
+
 bool testC();
 void findB(int, int);
 void enumA(int);
@@ -81,33 +82,26 @@ void findB(int prior, int k) {
     }
 }
 
-void enumf3(int i) {
-       
-        set(f3, n, q, i, 1);
-        enumf3(i-1);
-        set(f3, n, q, i, 0);
-        enumf3(i-1);
-        set(f3, n, q, i, -1);
-        enumf3(i-1);
-}
 
 
 
 bool testC() {
 
-    //METHOD 1: RANDOM CHOICE OF f3
-    //int offset = r*p; //case where we set the offset so we get some sort of f3 result 
-    //set(f3, n, q, offset, 1);
+    //HARDCODING IN f_3(x) = 1-z for n=210
+    f3[0]= 1;
+    //for (int j=0; j<n; j++) { cout << f3[j] << " ";}
+    //    cout << endl;
 
-
-    //METHOD 2: CHOICE GIVEN IN 2014 PAPER
-    // -000+00-00+00-0 is the given coefficient sequence
-    //f3[0] = -1;
-    //f3[4] = 1;
-    //f3[7] = -1;
-    //f3[10] = 1;
-    //f3[13] = -1; 
-
+    f3[1] = -1;
+    
+    f3[42] = -1;
+    f3[43] = 1;
+    f3[84] = 1;
+    f3[85] = -1;
+    f3[126] = -1;
+    f3[127] = 1;
+    f3[168] = 1;
+    f3[169] = -1;
 
     
     for (int i=0; i<n; i++) c[i] = a[i] + b[i] + f3[i];

@@ -1,6 +1,5 @@
 /*/////////////////////////////////*/
 /* Michael's Code for generating sporadic Reinhardt Polygons, pqr method
-/* edited by Molly Feldman 
 /*//////////////////////////////*/
 
 #include <iostream>
@@ -8,8 +7,9 @@ using namespace std;
 
 int num = 0;
 const int p = 3; /*prime number 1 */
-const int q = 5; /*prime number 2 */
-const int r = 3; /*additional value, our n is of the form pqr */
+const int q = 7; /*prime number 2 */
+const int r = 10; /*additional value, our n is of the form pqr */
+
 const int n = p*q*r;
 int a[n], b[n], c[n], f3[n]; /*coefficient vectors, representing how we can generate the coefficients given our algorithms*/
 
@@ -18,7 +18,6 @@ void set(int*, int, int, int, int);
 void printVec(int*, int);
 void printGaps(int*, int);
 void printAns();
-void enumf3(int);
 bool testC();
 void findB(int, int);
 void enumA(int);
@@ -30,8 +29,7 @@ bool hasPeriod(int*, int, int);
 int main() {
     for (int i=0; i<n; i++) a[i] = b[i] = c[i] = f3[i] = 0;
     set(a, n, q, 0, 1);
-    enumA(q);
-    
+    enumA(q/p);
     return 0;
 }
 
@@ -53,7 +51,7 @@ void enumA(int i) {
         enumA(i-1);
         set(a, n, q, i, -1);
         enumA(i-1);
-       
+        int k;
     }
 }
 
@@ -61,9 +59,8 @@ void enumA(int i) {
 // k is the current index we need to set.
 void findB(int prior, int k) {
     //cout << "in findB" << endl;
-
     if (k == n/p) {
-        //cout << "printing" << endl;
+        cout << "printing" << endl;
         if (testC()) printAns();
     } else if (a[k] == prior) {
         set(b, n, p, k, -prior);
@@ -81,36 +78,24 @@ void findB(int prior, int k) {
     }
 }
 
-void enumf3(int i) {
-       
-        set(f3, n, q, i, 1);
-        enumf3(i-1);
-        set(f3, n, q, i, 0);
-        enumf3(i-1);
-        set(f3, n, q, i, -1);
-        enumf3(i-1);
-}
-
-
-
 bool testC() {
+    //HARDCODING IN f_3(x) = 1-z for n=210
+    f3[0]= 1;
+    //for (int j=0; j<n; j++) { cout << f3[j] << " ";}
+    //    cout << endl;
 
-    //METHOD 1: RANDOM CHOICE OF f3
-    //int offset = r*p; //case where we set the offset so we get some sort of f3 result 
-    //set(f3, n, q, offset, 1);
-
-
-    //METHOD 2: CHOICE GIVEN IN 2014 PAPER
-    // -000+00-00+00-0 is the given coefficient sequence
-    //f3[0] = -1;
-    //f3[4] = 1;
-    //f3[7] = -1;
-    //f3[10] = 1;
-    //f3[13] = -1; 
-
-
+    f3[1] = -1;
     
-    for (int i=0; i<n; i++) c[i] = a[i] + b[i] + f3[i];
+    f3[42] = -1;
+    f3[43] = 1;
+    f3[84] = 1;
+    f3[85] = -1;
+    f3[126] = -1;
+    f3[127] = 1;
+    f3[168] = 1;
+    f3[169] = -1;
+
+    for (int i=0; i<n; i++) c[i] = a[i] + b[i] + f3[n];
     int prior = 1;
 
     for (int i=1; i<n; i++) {
@@ -123,17 +108,14 @@ bool testC() {
 }
 
 
-
 /****************************************************************/
 /* printAns, printGaps and printVec are simply print formatting functions */
 void printAns() {
-cout << num << endl;
+cout << num << " " << "a:" << endl;
     printVec(a, n);
     cout << endl;
     printVec(b, n);
     cout << endl;
-    printVec(f3, n);
-    cout << endl << endl;
     printVec(c, n);
     cout << endl;
     printGaps(c, n);
