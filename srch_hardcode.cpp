@@ -43,7 +43,7 @@ void set(int* v, int n, int q, int offset, int val) {
 void enumA(int i) { 
     //cout << "in enumA" << endl;        /*weird nested loop structure; why is it like this? */
     if (i == 0) {
-        findB(1, 1);
+        findB(1, (n/p)/2);
     } else {
         set(a, n, q, i, 1);
         enumA(i-1);
@@ -59,7 +59,7 @@ void enumA(int i) {
 // k is the current index we need to set.
 void findB(int prior, int k) {
     //cout << "in findB" << endl;
-    if (k == n/q) {
+    if (k == n/p) {
         //cout << "printing" << endl;
         if (testC()) printAns();
     } else if (a[k] == prior) {
