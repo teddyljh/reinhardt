@@ -59,7 +59,7 @@ void enumA(int i) {
 // k is the current index we need to set.
 void findB(int prior, int k) {
     //cout << "in findB" << endl;
-    if (k == n/p) {
+    if (k == n/r) {
         cout << "printing" << endl;
         if (testC()) printAns();
     } else if (a[k] == prior) {
