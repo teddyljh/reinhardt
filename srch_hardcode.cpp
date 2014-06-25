@@ -116,6 +116,8 @@ cout << num << " " << "a:" << endl;
     cout << endl;
     printVec(b, n);
     cout << endl;
+    printVec(f3,n);
+    cout << endl;
     printVec(c, n);
     cout << endl;
     printGaps(c, n);
