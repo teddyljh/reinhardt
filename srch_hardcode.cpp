@@ -29,7 +29,7 @@ bool hasPeriod(int*, int, int);
 int main() {
     for (int i=0; i<n; i++) a[i] = b[i] = c[i] = f3[i] = 0;
     set(a, n, q, 0, 1);
-    enumA(q/p);
+    enumA(p);
     return 0;
 }
 
