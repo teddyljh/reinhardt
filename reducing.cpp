@@ -4,7 +4,7 @@ using namespace std;
 int num = 0;
 const int p = 3; /*prime number 1 */
 const int q = 7; /*prime number 2 */
-const int l = 2;
+const int l = 5;
 const int r = 1; /*additional value, our n is of the form pqr */
 
 const int n = p*l*q*r;
@@ -151,6 +151,7 @@ void finish(int start) {
 ///////////////////////////////////////////////////////////////
 int main() {
 	
+	cout << "START EXECUTION" << endl;
 	//sets up the coefficient vectors
 	setCoeffs();
 	int maxf2 = 14;
@@ -193,6 +194,7 @@ int main() {
 	}
 
 	cout << "hello" << endl;
+	return 0;
 }
 
 
