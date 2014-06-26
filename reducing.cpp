@@ -4,13 +4,13 @@ using namespace std;
 int num = 0;
 const int p = 3; /*prime number 1 */
 const int q = 7; /*prime number 2 */
-const int l = 5;
+const int l = 2;
 const int r = 1; /*additional value, our n is of the form pqr */
 
 const int n = p*l*q*r;
 int g1[n], g2[n], g3[n], g4[n], f2[14], f3[20], f1[34],  F[n];
 bool boolc[n][3];
-//int c3[70], c5[84], c7[90], /*coefficient vectors, representing how we can generate the coefficients given our algorithms*/
+/*coefficient vectors, representing how we can generate the coefficients given our algorithms*/
 
 void printVec(int*, int);
 void printGaps(int*, int);
@@ -26,7 +26,7 @@ void combine(int* , int* , int*);
 void finish(int);
 
 ////////////////////////////////////////////////////////////////////////
-
+/* setCoeffs - basic setup for all coefficient vectors use within */
 void setCoeffs() {
 	for (int x=0; x < n; x++) {
 		for (int y=0; y <n ; y++ ){
@@ -34,40 +34,11 @@ void setCoeffs() {
 		}
 	}
 	for (int i=0; i<n; i++) g1[i] = g2[i] = g3[i] = F[i] = 0;
-	//for (int j=0; j<70; j++) c3[j] = 0;
-	//for (int k=0; k<84; k++) c5[k] =0;
-	//for (int m=0; m<90; m++) c7[m] = 0;
-	for (int e=0; e<14; e++) f2[e] = 0;
-	for (int f=0; f<20; f++) f3[f] = 0;
+	for (int e=0; e<14; e++) f2[e] = 1;
+	for (int f=0; f<20; f++) f3[f] = 1;
 	for (int h=0; h<34; h++) f1[h] = 0;
-
-	/*c3[0] = c5[0] = c7[0] = 1;
-	c3[35] = c5[21] = c5[63] = -1;
-	c3[70] = c5[42] = c5[84] = 1;
-	c7[15] = -1;
-	c7[30] = 1;
-	c7[45] = -1;
-	c7[60] = 1;
-	c7[75] = -1; 
-	c7[90] = -1;*/
-
 }
-
-/*
-/* simple polynomial multiplication function
-void multiply(int* v, int* w, int* final) {
-	size1 = v.size();
-	size2 = w.size();
-
-	for (int i=0; i<size1; i++) {
-		for (int j=0; j < size2; j++) {
-			final[i+j] = v[i] * w[j];
-		}
-	}
-
-}
-*/ 
-
+///////////////////////////////////////////////////////////////////////////
 /* repeat - repeats the coefficient sequence of v, with alternating sign,
 and sets them to be the coefficient sequence of w.
 	recursive definition
@@ -88,6 +59,7 @@ void repeat(int* v, int* w, int num, int rep) {
 
 }
 
+////////////////////////////////////////////////////////////////////////////
 /* determineBool - determines all possible coefficient values for g3[n]
 based on the fact that F[n] can only have coefficient values in -1, 1, or 0
 */
@@ -121,6 +93,7 @@ bool determineBool(int* v, int* w) {
 	}
 }
 
+/////////////////////////////////////////////////////////////////////////
 /* checkAlt - checks the necessary condition for F[n] that (a) it has an alternating sequence of -/+'s
 and (b) that it has an odd number [reduces to checking whether or not the last sign is +] */
 bool checkAlt(int* v) {
@@ -137,16 +110,20 @@ bool checkAlt(int* v) {
 	if (sign == -1) {
 		return false;
 	} else {
-	return true && (!isPeriodic(v));
+	return true && (!isPeriodic(v, n));
 	}
 }
-
+//////////////////////////////////////////////////////////////////////////
+/* combine - adds three coefficient vectors to determine the final Reinhardt polynomial */
 void combine(int* v, int* w, int *x) {
 	for (int i=0; i<n; i++) {
 		F[i] = v[i] + w[i] + x[i];
 	}
 }
 
+//////////////////////////////////////////////////////////////
+/* finish - calculates all possible g1's from the boolean array, checks their
+/* validity as Reinhardt polynomials, and prints out any valid results */
 void finish(int start) {
 	//want the results to be equal to g1
 	if (start == n+1) {
@@ -171,59 +148,52 @@ void finish(int start) {
 
 }
 
-
-
-
+///////////////////////////////////////////////////////////////
 int main() {
+	
 	//sets up the coefficient vectors
 	setCoeffs();
-	//loop through all possible instances for f2
-	for (int i=0; i<n; i++) {
+	int maxf2 = 14;
+	int maxf3 = 20;
+	
+	while (true) {
 
-
-		for (int j=0; j < n; j++) {
-
-			//determining g2 and g3 
-			repeat(f2, g2, 1, 0);
+		while(true) {
+	        repeat(f2, g2, 1, 0);
 			repeat(f3, g3, 1, 0);
 
 			determineBool(g2, g3);
 			finish(0);
 
+	       	// next iteration:
+	       	f3[maxf3]--;
+	       	for(int j= maxf3; j>1; j--) {  //decreasing
+	       	   if (f3[j] < -1) {
+	           	f3[j-1]--;
+	     	   	f3[j]=1;
+	        	}
 
-	 }
+	        	if(f3[0]<-1) {
+	        	    break;
+	        	}
+	        }       	        	        	
+		}
 
+		f2[maxf2]--;
+    	for(int k= maxf2; k>1; k--) {  //decreasing
+       		if (f2[k] < -1) {
+          		f2[k-1]--;
+     	  		f2[k]=1;
+       		}
+
+       		if(f2[0]<-1) {
+          		break;
+        	}
+    	}
 	}
-
-
-	
-
-
-	//loop through all possible instances for f3
-
-
-	//multiply f2 by c7 and multiple f3 by c5; add them together
-
-	//determine g1 (then reduce down to f1)
-
-	//determine F, figure out if it's sporadic, then print out
-	
-	
-
-
-
-
-
 
 	cout << "hello" << endl;
 }
-
-
-
-
-
-
-
 
 
 /****************************************************************/
