@@ -26,7 +26,7 @@ bool isPeriodic(int*, int);
 bool hasPeriod(int*, int, int);
 void setCoeffs();
 bool determineBool(int* , int*);
-void repeat(int, int);
+void repeat(int* int*, int, int, int, int);
 bool checkAlt(int*);
 void combine(int* , int* , int*);
 void finish(int);
