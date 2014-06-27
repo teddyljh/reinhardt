@@ -139,8 +139,10 @@ void combine(int* v, int* w, int *x) {
 //////////////////////////////////////////////////////////////
 /* finish - calculates all possible g1's from the boolean array, checks their
 /* validity as Reinhardt polynomials, and prints out any valid results */
-void finish(int start, int change) {
+void finish(int start, int nb) {
 	//want the results to be equal to g1
+	if (nb==0) n =1;
+	if (nb == 1) n = 0;
 	
 	printVec(g1, n);
 	cout << endl;
@@ -149,19 +151,20 @@ void finish(int start, int change) {
 		if (checkAlt(F)) printAns();
 	}
 
-	if (boolc[start][0]) {
-		g1[start] = -1;
-		finish(start+1, change+1);
+	if (boolc[(-nb * n) + start][0]) {
+		g1[(-nb * n) + start] = -1;
+		finish(start+1, nb);
 	}	
 
-	if (boolc[start][1] ) {
-		g1[start] = 0;
-		finish(start+1, change+1);
+	if (boolc[-nb + start][1] ) {
+		g1[(-nb * n) + start] = 0;
+		
+		finish(start+1, nb);
 	}
 
-	if (boolc[start][2]) {
-		g1[start] = 1;
-		finish(start+1, change+1);
+	if (boolc[(-nb *n) + start][2]) {
+		g1[(-nb *n) + start] = 1;
+		finish(start+1, nb);
 	}
 }
 
