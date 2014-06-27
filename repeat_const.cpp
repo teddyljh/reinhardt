@@ -169,7 +169,11 @@ int main() {
 	f3[4] = f3[10] = 1;
 	
 	repeat(f2, g2, 1, 0);
+	printVec(g2, n);
+	cout << endl;
 	repeat(f3, g3, 1, 0);
+	printVec(g3, n);
+	cout << endl;
 	determineBool(g2, g3);
 	finish(0);
 	/*big:
