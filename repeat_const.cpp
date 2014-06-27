@@ -7,8 +7,8 @@ const int q = 7; /*prime number 2 */
 const int l = 5;
 const int r = 1; /*additional value, our n is of the form pqr */
 
-const int maxf2 = 5;
-const int maxf3 = 10;
+const int maxf2 = 15;
+const int maxf3 = 21;
 const int maxf1 = maxf2 + maxf3 -1; 
 
 const int maxrepf2 = 5;
@@ -51,9 +51,9 @@ void setCoeffs() {
 and sets them to be the coefficient sequence of w.
 	recursive definition
 */
-void repeat(int* v, int* w, int num, int rep) {
-	int size1 = sizeof(v)/sizeof(int); 
-	int size2 = sizeof(w)/sizeof(int); //WATCH OUT; PRINT OUT, could give wrong results
+void repeat(int* v, int* w, int size1, int size2, int num, int rep) {
+	//int size1 = sizeof(v)/sizeof(int); 
+	//int size2 = sizeof(w)/sizeof(int); //WATCH OUT; PRINT OUT, could give wrong results
 
 	cout << "size 1" << size1 << " " << "size 2" << size2 << endl;
 	cout << endl;
@@ -173,10 +173,10 @@ int main() {
 	f3[0] = f3[7] = f3[13] = -1;
 	f3[4] = f3[10] = 1;
 	
-	repeat(f2, g2, 1, 0);
+	repeat(f2, g2, maxf2, n, 1, 0);
 	printVec(g2, n);
 	cout << endl;
-	repeat(f3, g3, 1, 0);
+	repeat(f3, g3, maxf3, n, 1, 0);
 	printVec(g3, n);
 	cout << endl;
 	determineBool(g2, g3);
