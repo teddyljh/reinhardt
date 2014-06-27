@@ -51,9 +51,9 @@ void setCoeffs() {
 and sets them to be the coefficient sequence of w.
 	recursive definition
 */
-void repeat(int* v, int* w, int num, int rep) {
-	int size1 = sizeof(v)/sizeof(int); 
-	int size2 = sizeof(w)/sizeof(int); //WATCH OUT; PRINT OUT, could give wrong results
+void repeat(int num, int rep) {
+	int size1 = sizeof(f2)/sizeof(int); 
+	int size2 = sizeof(f3)/sizeof(int); //WATCH OUT; PRINT OUT, could give wrong results
 
 	if (rep == size2) {
 		return;
@@ -63,7 +63,7 @@ void repeat(int* v, int* w, int num, int rep) {
 		w[i] = num*v[i];
 
 	}
-	repeat(v, w, -num, rep+size1);
+	repeat(-num, rep+size1);
 
 }
 
@@ -168,10 +168,10 @@ int main() {
 	f3[0] = f3[7] = f3[13] = -1;
 	f3[4] = f3[10] = 1;
 	
-	repeat(f2, g2, 1, 0);
+	repeat(1, 0);
 	printVec(g2, n);
 	cout << endl;
-	repeat(f3, g3, 1, 0);
+	repeat(1, 0);
 	printVec(g3, n);
 	cout << endl;
 	determineBool(g2, g3);
