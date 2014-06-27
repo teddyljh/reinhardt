@@ -64,7 +64,6 @@ void repeat(int* v, int* w, int size1, int size2, int num, int rep) {
 	}
 
 	for (int i = rep; i < (size2/size1 + rep); i++ ) {
-		cout << w[i] << " " << num*v[i] << endl << endl;
 		w[i] = num*v[i];
 
 	}
@@ -168,10 +167,10 @@ int main() {
 	//sets up the coefficient vectors
 	setCoeffs();
 	
-	f2[0] = f2[8] = f2[13] = f2[14] = f2[17] = f2[19] = 1;
-	f2[4] = f2[9] = f2[15] = f2[16] = f2[18] = -1;
-	f3[0] = f3[7] = f3[13] = -1;
-	f3[4] = f3[10] = 1;
+	f3[0] = f3[8] = f3[13] = f3[14] = f3[17] = f3[19] = 1;
+	f3[4] = f3[9] = f3[15] = f3[16] = f3[18] = -1;
+	f2[0] = f2[7] = f2[13] = -1;
+	f2[4] = f2[10] = 1;
 	
 	repeat(f2, g2, maxf2, n, 1, 0);
 	printVec(g2, n);
