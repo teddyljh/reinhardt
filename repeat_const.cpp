@@ -55,14 +55,14 @@ void repeat(int* v, int* w, int size1, int size2, int num, int rep) {
 	//int size1 = sizeof(v)/sizeof(int); 
 	//int size2 = sizeof(w)/sizeof(int); //WATCH OUT; PRINT OUT, could give wrong results
 
-	cout << "size 1" << size1 << " " << "size 2" << size2 << endl;
+	cout << "size1: " << size1 << " " << "size2: " << size2 << endl;
 	cout << endl;
 	if (rep == size2) {
 		printVec(w, n);
 		cout << endl;
 		return;
 	}
-
+	cout << "rep: " << rep << "size2/size1: " << size2/size1 << "+rep: " << size2/size1 + rep << endl;
 	for (int i = rep; i < (size2/size1 + rep); i++ ) {
 		w[i] = num*v[i];
 
@@ -172,10 +172,10 @@ int main() {
 	f2[0] = f2[7] = f2[13] = -1;
 	f2[4] = f2[10] = 1;
 	
-	repeat(f2, g2, 15, n, 1, 0);
+	repeat(f2, g2, maxf2, n, 1, 0);
 	printVec(g2, n);
 	cout << endl;
-	repeat(f3, g3, 21, n, 1, 0);
+	repeat(f3, g3, maxf3, n, 1, 0);
 	printVec(g3, n);
 	cout << endl;
 	determineBool(g2, g3);
