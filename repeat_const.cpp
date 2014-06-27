@@ -137,9 +137,6 @@ void combine(int* v, int* w, int *x) {
 void finish(int start, int change) {
 	//want the results to be equal to g1
 	
-	if (change == 2) {
-		change = 0;
-	}
 	
 	printVec(g1, n);
 	cout << endl;
@@ -152,7 +149,7 @@ void finish(int start, int change) {
 
 	if (boolc[start][0]) {
 		g1[start] = -1;
-		change++;
+	
 		finish(start+1, change+1);
 	}	
 
@@ -162,6 +159,7 @@ void finish(int start, int change) {
 	}
 
 	if (boolc[start][2]) {
+		g1[start] = 1;
 		finish(start+1, change+1);
 	}
 	}
@@ -174,12 +172,13 @@ void finish(int start, int change) {
 	}
 
 	if (boolc[start][2]) {
+		g1[start] = 1;
 		finish(start+1, change+1);
 	}
 	
 	if (boolc[start][0]) {
 		g1[start] = -1;
-		change++;
+		
 		finish(start+1, change+1);
 	}	
 
@@ -190,12 +189,12 @@ void finish(int start, int change) {
 	
 
 	if (boolc[start][2]) {
+		g1[start] = 1;
 		finish(start+1, change+1);
 	}
 	
 	if (boolc[start][0]) {
 		g1[start] = -1;
-		change++;
 		finish(start+1, change+1);
 	}	
 
