@@ -166,11 +166,11 @@ int main() {
 	while (true) {
 
 		while(true) {
-			printVec(repf2, 5);
-			cout << endl;
-			printVec(repf3, 7);
-			cout << endl;
-			cout << endl;
+			//printVec(repf2, 5);
+			//cout << endl;
+			//printVec(repf3, 7);
+			//cout << endl;
+			//cout << endl;
 	        repeat(repf2, f2, 1, 0);
 			repeat(repf3, f3, 1, 0);
 			repeat(f2, g2, 1, 0);
