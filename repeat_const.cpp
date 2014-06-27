@@ -151,17 +151,17 @@ void finish(int start, int change) {
 	if (boolc[start][0] && change == 0) {
 		g1[start] = -1;
 		change++;
-		finish(start+1);
+		finish(start+1, change+1);
 	}	
 
 	if (boolc[start][1] && change == 1) {
 		g1[start] = 0;
-		finish(start+1);
+		finish(start+1, change-1);
 	}
 
 	if (boolc[start][2] && change == -1) {
 		g1[start] = 1;
-		finish(start+1);
+		finish(start+1, change);
 	}
 	change--;
 }
