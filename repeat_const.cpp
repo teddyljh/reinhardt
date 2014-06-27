@@ -40,8 +40,8 @@ void setCoeffs() {
 		}
 	}
 	for (int i=0; i<n; i++) g1[i] = g2[i] = g3[i] = F[i] = 0;
-	for (int e=0; e<15; e++) f2[e] = 1;
-	for (int f=0; f<21; f++) f3[f] = 1;
+	for (int e=0; e<15; e++) f2[e] = 0;
+	for (int f=0; f<21; f++) f3[f] = 0;
 	for (int m=0; m<5; m++) repf2[m] =1;
 	for (int n1=0; n1<7; n1++) repf3[n1] = 1;
 	//for (int h=0; h<35; h++) f1[h] = 0;
