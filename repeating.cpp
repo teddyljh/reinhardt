@@ -188,6 +188,7 @@ int main() {
 	        	}
 
 	        	if(repf3[0]<-1) {
+	        	    repf3[0] = 1;
 	        	    goto outside;
 
 	        	}
@@ -202,6 +203,7 @@ int main() {
        			}
 
        			if(repf2[0]<-1) {
+       				repf2[0] =1;
           			goto big;
         		}
     		}
