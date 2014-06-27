@@ -137,7 +137,7 @@ void combine(int* v, int* w, int *x) {
 void finish(int start, int change) {
 	//want the results to be equal to g1
 	
-	if (change == 2 || change == -2) {
+	if (change == 2) {
 		change = 0;
 	}
 	
@@ -148,22 +148,63 @@ void finish(int start, int change) {
 		if (checkAlt(F)) printAns();
 	}
 
-	if (boolc[start][0] && change == 0) {
+	if (change == 0) {
+
+	if (boolc[start][0]) {
 		g1[start] = -1;
 		change++;
 		finish(start+1, change+1);
 	}	
 
-	if (boolc[start][1] && change == 1) {
+	if (boolc[start][1] ) {
 		g1[start] = 0;
-		finish(start+1, change-1);
+		finish(start+1, change+1);
 	}
 
-	if (boolc[start][2] && change == -1) {
-		g1[start] = 1;
-		finish(start+1, change);
+	if (boolc[start][2]) {
+		finish(start+1, change+1);
 	}
-	change--;
+	}
+	
+	else if (change == 1) {
+	
+	if (boolc[start][1] ) {
+		g1[start] = 0;
+		finish(start+1, change+1);
+	}
+
+	if (boolc[start][2]) {
+		finish(start+1, change+1);
+	}
+	
+	if (boolc[start][0]) {
+		g1[start] = -1;
+		change++;
+		finish(start+1, change+1);
+	}	
+
+	
+	}
+	else if (change == 2) {
+	
+	
+
+	if (boolc[start][2]) {
+		finish(start+1, change+1);
+	}
+	
+	if (boolc[start][0]) {
+		g1[start] = -1;
+		change++;
+		finish(start+1, change+1);
+	}	
+
+	if (boolc[start][1] ) {
+		g1[start] = 0;
+		finish(start+1, change+1);
+	}
+	
+	}
 }
 
 ///////////////////////////////////////////////////////////////
