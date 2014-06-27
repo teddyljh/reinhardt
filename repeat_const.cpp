@@ -62,7 +62,7 @@ void repeat(int* v, int* w, int size1, int size2, int num, int rep) {
 		return;
 	}
 	for (int i = rep; i < size1 + rep; i++ ) {
-		w[i] = num*v[i%15];
+		w[i] = num*v[i%size1];
 
 	}
 	repeat(v, w, size1, size2, -num, rep+size1);
