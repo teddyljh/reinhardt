@@ -29,7 +29,7 @@ bool determineBool(int* , int*);
 void repeat(int*, int*, int, int, int, int);
 bool checkAlt(int*);
 void combine(int* , int* , int*);
-void finish(int);
+void finish(int, int);
 
 ////////////////////////////////////////////////////////////////////////
 /* setCoeffs - basic setup for all coefficient vectors use within */
@@ -134,8 +134,13 @@ void combine(int* v, int* w, int *x) {
 //////////////////////////////////////////////////////////////
 /* finish - calculates all possible g1's from the boolean array, checks their
 /* validity as Reinhardt polynomials, and prints out any valid results */
-void finish(int start) {
+void finish(int start, int change) {
 	//want the results to be equal to g1
+	
+	if (change == 2 || change == -2) {
+		change = 0;
+	}
+	
 	printVec(g1, n);
 	cout << endl;
 	if (start == n+1) {
@@ -143,21 +148,22 @@ void finish(int start) {
 		if (checkAlt(F)) printAns();
 	}
 
-	if (boolc[start][0]) {
+	if (boolc[start][0] && change == 0) {
 		g1[start] = -1;
+		change++;
 		finish(start+1);
 	}	
 
-	if (boolc[start][1]) {
+	if (boolc[start][1] && change == 1) {
 		g1[start] = 0;
 		finish(start+1);
 	}
 
-	if (boolc[start][2]) {
+	if (boolc[start][2] && change == -1) {
 		g1[start] = 1;
 		finish(start+1);
 	}
-
+	change--;
 }
 
 ///////////////////////////////////////////////////////////////
@@ -179,7 +185,7 @@ int main() {
 	//printVec(g3, n);
 	//cout << endl;
 	determineBool(g2, g3);
-	finish(0);
+	finish(0, 0);
 	/*big:
 	while (true) {
 
