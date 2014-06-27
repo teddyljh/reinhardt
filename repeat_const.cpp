@@ -172,10 +172,10 @@ int main() {
 	f2[0] = f2[7] = f2[13] = -1;
 	f2[4] = f2[10] = 1;
 	
-	repeat(f2, g2, maxf2, n, 1, 0);
+	repeat(f2, g2, 15, n, 1, 0);
 	printVec(g2, n);
 	cout << endl;
-	repeat(f3, g3, maxf3, n, 1, 0);
+	repeat(f3, g3, 21, n, 1, 0);
 	printVec(g3, n);
 	cout << endl;
 	determineBool(g2, g3);
