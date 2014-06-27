@@ -62,7 +62,7 @@ void repeat(int* v, int* w, int size1, int size2, int num, int rep) {
 		cout << endl;
 		return;
 	}
-	cout << "rep: " << rep << " " << << "size2/size1: " << size2/size1 << " +rep: " << size2/size1 + rep << endl;
+	cout << "rep: " << rep << " " << "size2/size1: " << size2/size1 << " +rep: " << size2/size1 + rep << endl;
 	for (int i = rep; i < (size2/size1 + rep); i++ ) {
 		w[i] = num*v[i];
 
