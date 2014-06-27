@@ -136,10 +136,10 @@ void combine(int* v, int* w, int *x) {
 /* validity as Reinhardt polynomials, and prints out any valid results */
 void finish(int start) {
 	//want the results to be equal to g1
+	printVec(g1, n);
+	cout << endl;
 	if (start == n+1) {
 		combine(g1,g2,g3);
-		printVec(F,n);
-		cout << endl;
 		if (checkAlt(F)) printAns();
 	}
 
