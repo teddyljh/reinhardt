@@ -68,7 +68,7 @@ void repeat(int* v, int* w, int size1, int size2, int num, int rep) {
 		w[i] = num*v[i];
 
 	}
-	repeat(v, w, -num, rep+size1);
+	repeat(v, w, size1, size2, -num, rep+size1);
 
 }
 
