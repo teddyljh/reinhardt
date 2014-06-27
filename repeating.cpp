@@ -15,7 +15,7 @@ const int maxrepf2 = 5;
 const int maxrepf3 = 7;
 
 const int n = p*l*q*r;
-int g1[n], g2[n], g3[n], g4[n], f2[15], f3[21], f1[35],  F[n], repf2[5], repf2[7];
+int g1[n], g2[n], g3[n], g4[n], f2[15], f3[21], f1[35],  F[n], repf2[5], repf3[7];
 bool boolc[n][3];
 /*coefficient vectors, representing how we can generate the coefficients given our algorithms*/
 
