@@ -55,6 +55,8 @@ void repeat(int* v, int* w, int num, int rep) {
 	int size1 = sizeof(v)/sizeof(int); 
 	int size2 = sizeof(w)/sizeof(int); //WATCH OUT; PRINT OUT, could give wrong results
 
+	cout << "size 1" << size1 << " " << "size 2" << size2 << endl;
+	cout << endl;
 	if (rep == size2) {
 		printVec(w, n);
 		cout << endl;
@@ -62,6 +64,7 @@ void repeat(int* v, int* w, int num, int rep) {
 	}
 
 	for (int i = rep; i < (size2/size1 + rep); i++ ) {
+		cout << w[i] << " " << num*v[i] << endl << endl;
 		w[i] = num*v[i];
 
 	}
