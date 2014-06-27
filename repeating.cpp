@@ -162,7 +162,7 @@ int main() {
 	cout << "START EXECUTION" << endl;
 	//sets up the coefficient vectors
 	setCoeffs();
-
+	big:
 	while (true) {
 
 		while(true) {
@@ -188,28 +188,28 @@ int main() {
 	        	}
 
 	        	if(repf3[0]<-1) {
-	        	    break;
+	        	    goto outside;
+
 	        	}
 	        }       	        	        	
 		}
+		outside:
+			repf2[maxrepf2]--;
+    		for(int k= maxrepf2; k>=1; k--) {  //decreasing
+       			if (repf2[k] < -1) {
+          			repf2[k-1]--;
+     	  			repf2[k]=1;
+       			}
 
-		repf2[maxrepf2]--;
-    	for(int k= maxrepf2; k>=1; k--) {  //decreasing
-       		if (repf2[k] < -1) {
-          		repf2[k-1]--;
-     	  		repf2[k]=1;
-       		}
-
-       		if(repf2[0]<-1) {
-          		break;
-        	}
-    	}
-	}
+       			if(repf2[0]<-1) {
+          			goto big;
+        		}
+    		}
+		}
 
 	cout << "hello" << endl;
 	return 0;
 }
-
 
 /****************************************************************/
 /* printAns, printGaps and printVec are simply print formatting functions */
