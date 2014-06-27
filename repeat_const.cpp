@@ -141,9 +141,8 @@ void combine(int* v, int* w, int *x) {
 /* validity as Reinhardt polynomials, and prints out any valid results */
 void finish(int start, int nb) {
 	//want the results to be equal to g1
-	if (nb==0) nb =1;
-	if (nb == 1) nb = 0;
-	
+	start++;
+
 	printVec(g1, n);
 	cout << endl;
 	if (start == n+1) {
@@ -151,20 +150,20 @@ void finish(int start, int nb) {
 		if (checkAlt(F)) printAns();
 	}
 
-	if (boolc[(-nb * n) + start][0]) {
-		g1[(-nb * n) + start] = -1;
-		finish(start+1, nb);
+	if (boolc[start][0]) {
+		g1[start] = -1;
+		finish(start, nb);
 	}	
 
-	if (boolc[-nb + start][1] ) {
-		g1[(-nb * n) + start] = 0;
+	if (boolc[start][1] ) {
+		g1[start] = 0;
 		
-		finish(start+1, nb);
+		finish(start, nb);
 	}
 
-	if (boolc[(-nb *n) + start][2]) {
-		g1[(-nb *n) + start] = 1;
-		finish(start+1, nb);
+	if (boolc[start][2]) {
+		g1[start] = 1;
+		finish(start, nb);
 	}
 }
 
