@@ -39,7 +39,12 @@ void setCoeffs() {
 			boolc[x][y] = false;
 		}
 	}
-	for (int i=0; i<n; i++) g1[i] = g2[i] = g3[i] = F[i] = 0;
+	for (int i=0; i<n; i++) g2[i] = g3[i] = F[i] = 0;
+	for (int j=0; j<n; j++) {
+		if (j%3 == 0) g1[j] = 0;
+		if (j%3 == 1) g1[j] = -1;
+		if (j%3 == 2) g1[j] = 1;
+	}
 	for (int e=0; e<15; e++) f2[e] = 0;
 	for (int f=0; f<21; f++) f3[f] = 0;
 	for (int m=0; m<5; m++) repf2[m] =1;
@@ -137,7 +142,6 @@ void combine(int* v, int* w, int *x) {
 void finish(int start, int change) {
 	//want the results to be equal to g1
 	
-	
 	printVec(g1, n);
 	cout << endl;
 	if (start == n+1) {
@@ -145,11 +149,8 @@ void finish(int start, int change) {
 		if (checkAlt(F)) printAns();
 	}
 
-	if (change == 0) {
-
 	if (boolc[start][0]) {
 		g1[start] = -1;
-	
 		finish(start+1, change+1);
 	}	
 
@@ -161,48 +162,6 @@ void finish(int start, int change) {
 	if (boolc[start][2]) {
 		g1[start] = 1;
 		finish(start+1, change+1);
-	}
-	}
-	
-	else if (change == 1) {
-	
-	if (boolc[start][1] ) {
-		g1[start] = 0;
-		finish(start+1, change+1);
-	}
-
-	if (boolc[start][2]) {
-		g1[start] = 1;
-		finish(start+1, change+1);
-	}
-	
-	if (boolc[start][0]) {
-		g1[start] = -1;
-		
-		finish(start+1, change+1);
-	}	
-
-	
-	}
-	else if (change == 2) {
-	
-	
-
-	if (boolc[start][2]) {
-		g1[start] = 1;
-		finish(start+1, change+1);
-	}
-	
-	if (boolc[start][0]) {
-		g1[start] = -1;
-		finish(start+1, change+1);
-	}	
-
-	if (boolc[start][1] ) {
-		g1[start] = 0;
-		finish(start+1, change+1);
-	}
-	
 	}
 }
 
