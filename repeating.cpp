@@ -7,12 +7,12 @@ const int q = 7; /*prime number 2 */
 const int l = 5;
 const int r = 1; /*additional value, our n is of the form pqr */
 
-const maxf2 = 5;
-const maxf3 = 10;
-const maxf1 = maxf2 + maxf3 -1; 
+const int maxf2 = 5;
+const int maxf3 = 10;
+const int maxf1 = maxf2 + maxf3 -1; 
 
-const maxrepf2 = 5;
-const maxrepf3 = 7;
+const int maxrepf2 = 5;
+const int maxrepf3 = 7;
 
 const int n = p*l*q*r;
 int g1[n], g2[n], g3[n], g4[n], f2[15], f3[21], f1[35],  F[n], repf2[5], repf2[7];
