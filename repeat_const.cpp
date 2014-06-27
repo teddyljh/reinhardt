@@ -138,6 +138,8 @@ void finish(int start) {
 	//want the results to be equal to g1
 	if (start == n+1) {
 		combine(g1,g2,g3);
+		printVec(F,n);
+		cout << endl;
 		if (checkAlt(F)) printAns();
 	}
 
@@ -171,11 +173,11 @@ int main() {
 	f2[4] = f2[10] = 1;
 	
 	repeat(f2, g2, maxf2, n, 1, 0);
-	printVec(g2, n);
-	cout << endl;
+	//printVec(g2, n);
+	//cout << endl;
 	repeat(f3, g3, maxf3, n, 1, 0);
-	printVec(g3, n);
-	cout << endl;
+	//printVec(g3, n);
+	//cout << endl;
 	determineBool(g2, g3);
 	finish(0);
 	/*big:
