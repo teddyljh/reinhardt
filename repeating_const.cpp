@@ -162,7 +162,17 @@ int main() {
 	cout << "START EXECUTION" << endl;
 	//sets up the coefficient vectors
 	setCoeffs();
-	big:
+	
+	f2[0] = f2[8] = f2[13] = f2[14] = f2[17] = f2[19] = 1;
+	f2[4] = f2[9] = f2[15] = f2[16] = f2[18] = -1;
+	f3[0] = f3[7] = f3[13] = -1;
+	f3[4] = f3[10] = 1;
+	
+	repeat(f2, g2, 1, 0);
+	repeat(f3, g3, 1, 0);
+	determineBool(g2, g3);
+	finish(0);
+	/*big:
 	while (true) {
 
 		while(true) {
@@ -208,7 +218,7 @@ int main() {
         		}
     		}
 		}
-
+	*/
 	cout << "hello" << endl;
 	return 0;
 }
