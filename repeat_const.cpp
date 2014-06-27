@@ -56,6 +56,7 @@ void repeat(int* v, int* w, int size1, int size2, int num, int rep) {
 	//int size2 = sizeof(w)/sizeof(int); //WATCH OUT; PRINT OUT, could give wrong results
 
 	if (rep == size2) {
+		cout << "at end of repeat: " ;
 		printVec(w, n);
 		cout << endl;
 		return;
