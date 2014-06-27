@@ -181,7 +181,7 @@ int main() {
 
 	       	// next iteration:
 	       	repf3[maxrepf3]--;
-	       	for(int j= maxrepf3; j>1; j--) {  //decreasing
+	       	for(int j= maxrepf3; j>=1; j--) {  //decreasing
 	       	   if (repf3[j] < -1) {
 	           	repf3[j-1]--;
 	     	   	repf3[j]=1;
@@ -194,7 +194,7 @@ int main() {
 		}
 
 		repf2[maxrepf2]--;
-    	for(int k= maxrepf2; k>1; k--) {  //decreasing
+    	for(int k= maxrepf2; k>=1; k--) {  //decreasing
        		if (repf2[k] < -1) {
           		repf2[k-1]--;
      	  		repf2[k]=1;
