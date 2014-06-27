@@ -6,12 +6,16 @@ const int p = 3; /*prime number 1 */
 const int q = 7; /*prime number 2 */
 const int l = 5;
 const int r = 1; /*additional value, our n is of the form pqr */
+
 const maxf2 = 5;
 const maxf3 = 10;
 const maxf1 = maxf2 + maxf3 -1; 
 
+const maxrepf2 = 5;
+const maxrepf3 = 7;
+
 const int n = p*l*q*r;
-int g1[n], g2[n], g3[n], g4[n], f2[15], f3[21], f1[35],  F[n];
+int g1[n], g2[n], g3[n], g4[n], f2[15], f3[21], f1[35],  F[n], repf2[5], repf2[7];
 bool boolc[n][3];
 /*coefficient vectors, representing how we can generate the coefficients given our algorithms*/
 
@@ -38,6 +42,8 @@ void setCoeffs() {
 	for (int i=0; i<n; i++) g1[i] = g2[i] = g3[i] = F[i] = 0;
 	for (int e=0; e<15; e++) f2[e] = 1;
 	for (int f=0; f<21; f++) f3[f] = 1;
+	for (int m=0; m<5; m++) repf2[m] =1;
+	for (int n1=0; n1<7; n1++) repf3[n1] = 1;
 	//for (int h=0; h<35; h++) f1[h] = 0;
 }
 ///////////////////////////////////////////////////////////////////////////
@@ -160,34 +166,41 @@ int main() {
 	while (true) {
 
 		while(true) {
-	        repeat(f2, g2, 1, 0);
+			printVec(repf2, 5);
+			cout << endl;
+			printVec(repf3, 7);
+			cout << endl;
+			cout << endl;
+	        repeat(repf2, f2, 1, 0);
+			repeat(repf3, f3, 1, 0);
+			repeat(f2, g2, 1, 0);
 			repeat(f3, g3, 1, 0);
 
 			determineBool(g2, g3);
 			finish(0);
 
 	       	// next iteration:
-	       	f3[maxf3]--;
-	       	for(int j= maxf3; j>1; j--) {  //decreasing
-	       	   if (f3[j] < -1) {
-	           	f3[j-1]--;
-	     	   	f3[j]=1;
+	       	repf3[maxrepf3]--;
+	       	for(int j= maxrepf3; j>1; j--) {  //decreasing
+	       	   if (repf3[j] < -1) {
+	           	repf3[j-1]--;
+	     	   	repf3[j]=1;
 	        	}
 
-	        	if(f3[0]<-1) {
+	        	if(repf3[0]<-1) {
 	        	    break;
 	        	}
 	        }       	        	        	
 		}
 
-		f2[maxf2]--;
-    	for(int k= maxf2; k>1; k--) {  //decreasing
-       		if (f2[k] < -1) {
-          		f2[k-1]--;
-     	  		f2[k]=1;
+		repf2[maxrepf2]--;
+    	for(int k= maxrepf2; k>1; k--) {  //decreasing
+       		if (repf2[k] < -1) {
+          		repf2[k-1]--;
+     	  		repf2[k]=1;
        		}
 
-       		if(f2[0]<-1) {
+       		if(repf2[0]<-1) {
           		break;
         	}
     	}

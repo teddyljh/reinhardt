@@ -51,7 +51,7 @@ void enumA(int i) {
         enumA(i-1);
         set(a, n, q, i, -1);
         enumA(i-1);
-        int k;
+         int k;
     }
 }
 

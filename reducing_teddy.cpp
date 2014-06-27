@@ -1,3 +1,13 @@
+//
+//  main.cpp
+//  PolyGen
+//
+//  Created by Teddy Liu on 6/26/14.
+//
+
+#include <iostream>
+using namespace std;
+
 #include <iostream>
 using namespace std;
 
@@ -6,13 +16,15 @@ const int p = 3; /*prime number 1 */
 const int q = 7; /*prime number 2 */
 const int l = 5;
 const int r = 1; /*additional value, our n is of the form pqr */
-const maxf2 = 5;
-const maxf3 = 10;
-const maxf1 = maxf2 + maxf3 -1; 
+const int maxf2 = 14;
+const int maxf3 = 20;
+
 
 const int n = p*l*q*r;
-int g1[n], g2[n], g3[n], g4[n], f2[15], f3[21], f1[35],  F[n];
+int g1[n], g2[n], g3[n], g4[n], f2[14], f3[20], f1[34],  F[n];
 bool boolc[n][3];
+int polysetf2[(maxf2+2)*(maxf2+1)/2][maxf2]; //a 2-dim array to put in all combination of 0,-1,1
+int polysetf3[(maxf3 + 2)*(maxf3+1)/2][maxf3];
 /*coefficient vectors, representing how we can generate the coefficients given our algorithms*/
 
 void printVec(int*, int);
@@ -21,6 +33,7 @@ void printAns();
 bool isPeriodic(int*, int);
 bool hasPeriod(int*, int, int);
 void setCoeffs();
+void multiply(int*, int*, int*);
 bool determineBool(int* , int*);
 void repeat(int*, int* , int, int);
 bool checkAlt(int*);
@@ -36,9 +49,9 @@ void setCoeffs() {
 		}
 	}
 	for (int i=0; i<n; i++) g1[i] = g2[i] = g3[i] = F[i] = 0;
-	for (int e=0; e<15; e++) f2[e] = 1;
-	for (int f=0; f<21; f++) f3[f] = 1;
-	//for (int h=0; h<35; h++) f1[h] = 0;
+	for (int e=0; e<14; e++) f2[e] = 1;
+	for (int f=0; f<20; f++) f3[f] = 1;
+	for (int h=0; h<34; h++) f1[h] = 0;
 }
 ///////////////////////////////////////////////////////////////////////////
 /* repeat - repeats the coefficient sequence of v, with alternating sign,
@@ -53,7 +66,7 @@ void repeat(int* v, int* w, int num, int rep) {
 		return;
 	}
 
-	for (int i = rep; i < (size2/size1 + rep); i++ ) {
+	for (int i = rep; i < size2/size1; i++ ) {
 		w[i] = num*v[i];
 
 	}
@@ -144,7 +157,7 @@ void finish(int start) {
 	}
 
 	if (boolc[start][2]) {
-		g1[start] = 1;
+		g1[start] = 0;
 		finish(start+1);
 	}
 
@@ -156,6 +169,19 @@ int main() {
 	cout << "START EXECUTION" << endl;
 	//sets up the coefficient vectors
 	setCoeffs();
+	
+	cout<<"The combination:"<<endl;
+   	combination(n);
+   
+   cout<<"The permutation:"<<endl;
+   
+   //generate the permutations of each array in polyset
+   for (int i=0;i<((n+1)*(n+2)/2);i++)
+   {
+       permutation(polyset[i],0,n);
+   }
+
+
 
 	while (true) {
 
@@ -249,10 +275,91 @@ bool hasPeriod(int* c, int n, int t) {
     return true;
 }
 
+//generate all the combinations
+void combination(int n)
+{
+   int count = 0;
+   for (int m = 0;m<=n;m++) //the total number of 1 and -1
+   {
+       for(int p = 0;p<=m;p++) //the number of 1
+       {
+           
+           for(int i = 0;i<p;i++)
+           {
+               polyset[count][i] = 1;
+
+           }
+           for(int j=p;j<m;j++)
+           {
+               polyset[count][j] = -1;
+        
+           }
+        
+           //print out the combinations
+           for (int q=0; q<n;q++)
+           {
+               cout<<polyset[count][q];
+           }
+           
+           count++;
+           cout<<endl;
+       }
+   }
+   cout<<"Number of combinations:"<<count<<endl;
+   
+}
+
+
+//a permutation of an array that has repetitive elements
+void permutation(int a[],int t,int n)
+{
+   if(t == n)
+   {
+       for(int i=0;i<n;i++)
+       {
+           cout<<a[i]<<" ";
+       }
+       cout<<endl;
+       return;
+   }
+   
+   for(int j=t;j<n;j++)
+   {
+       int flag = 1;
+       for(int r=t;r<j;r++)
+       {
+           if(a[r] == a[j])
+           {
+               flag = 0;
+               break;
+           }
+       }
+       if(flag == 0)
+       {
+           continue;
+       }
+       swap(a[j],a[t]);
+       permutation(a,t+1,n);
+       swap(a[j],a[t]);
+   }
+}
 
 
 
+int main(int argc, const char * argv[])
+{
 
+   cout<<"The combination:"<<endl;
+   combination(n);
+   
+   cout<<"The permutation:"<<endl;
+   
+   //generate the permutations of each array in polyset
+   for (int i=0;i<((n+1)*(n+2)/2);i++)
+   {
+       permutation(polyset[i],0,n);
+   }
 
-
+   return 0;
+}
 
