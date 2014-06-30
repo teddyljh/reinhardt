@@ -45,6 +45,8 @@ void setCoeffs() {
 		if (j%3 == 1) g1[j] = -1;
 		if (j%3 == 2) g1[j] = 1;
 	}
+	for (int f=0; f< 5; f++) repf2[f] = 1;
+	for (int s =0; s<7; s++) repf3[s] = 1;
 	for (int e=0; e<15; e++) f2[e] = 0;
 	for (int f=0; f<21; f++) f3[f] = 0;
 	for (int a=0; a < 35; a++) Fstart[a] = f1[a] = 0;
@@ -228,24 +230,54 @@ int main() {
 	//sets up the coefficient vectors
 	setCoeffs();
 	
+	big:
+	while (true) {
 
-	// values set for a known polynomial that gives us a n=105 polygon
-	f3[0] = f3[8] = f3[13] = f3[14] = f3[17] = f3[19] = 1;
-	f3[4] = f3[9] = f3[15] = f3[16] = f3[18] = -1;
-	f2[0] = f2[7] = f2[13] = -1;
-	f2[4] = f2[10] = 1;
-	
-	repeat(f2, g2, maxf2, n, 1, 0);
-	repeat(f3, g3, maxf3, n, 1, 0);
+		while(true) {
+			
+	        repeat(repf2, f2, 5, n, 1, 0);
+			repeat(repf3, f3, 7, n, 1, 0);
 
-	for (int i=0; i<n; i++) {
-		inter[i] = g2[i] + g3[i];
-	}
-	//inter is all set up given the definition of g2 and g3 above
-	//now on to the algorithmic determination of g1
-	determine();
-	finalStep();
+			repeat(f2, g2, maxf2, n, 1, 0);
+			repeat(f3, g3, maxf3, n, 1, 0);
 
+			for (int i=0; i<n; i++) {
+				inter[i] = g2[i] + g3[i];
+			}
+		    //inter is all set up given the definition of g2 and g3 above
+		    //now on to the algorithmic determination of g1
+		    determine();
+		    finalStep();
+
+	       	// next iteration:
+	       	repf3[maxrepf3]--;
+	       	for(int j= maxrepf3; j>=1; j--) {  //decreasing
+	       	   if (repf3[j] < -1) {
+	           	repf3[j-1]--;
+	     	   	repf3[j]=1;
+	        	}
+
+	        	if(repf3[0]<-1) {
+	        	    repf3[0] = 1;
+	        	    goto outside;
+
+	        	}
+	        }       	        	        	
+		}
+		outside:
+			repf2[maxrepf2]--;
+    		for(int k= maxrepf2; k>=1; k--) {  //decreasing
+       			if (repf2[k] < -1) {
+          			repf2[k-1]--;
+     	  			repf2[k]=1;
+       			}
+
+       			if(repf2[0]<-1) {
+       				repf2[0] =1;
+          			goto big;
+        		}
+    		}
+		}
 
 	cout << "all done!" << endl;
 	return 0;
