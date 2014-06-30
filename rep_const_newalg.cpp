@@ -212,8 +212,8 @@ void finalStep() {
 	}
 	repeat(f1, g1, maxf1, n, 1, 0);
 	repeat(Fstart, F, 35, n, 1, 0);
-	//printAns();
-	if (!isPeriodic(F,n) && oddNumber(F,n)) printAns();
+	printAns();
+	//if (isPeriodic(F,n) && oddNumber(F,n)) printAns();
 
 }
 

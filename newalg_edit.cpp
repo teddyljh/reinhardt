@@ -30,7 +30,6 @@ void combine(int* , int* , int*);
 void finalStep();
 void determine();
 bool oddNumber(int*, int);
-bool checkAlt(int*);
 
 ////////////////////////////////////////////////////////////////////////
 /* setCoeffs - basic setup for all coefficient vectors use within */
@@ -46,8 +45,6 @@ void setCoeffs() {
 		if (j%3 == 1) g1[j] = -1;
 		if (j%3 == 2) g1[j] = 1;
 	}
-	for (int f=0; f< 5; f++) repf2[f] = 1;
-	for (int s =0; s<7; s++) repf3[s] = 1;
 	for (int e=0; e<15; e++) f2[e] = 0;
 	for (int f=0; f<21; f++) f3[f] = 0;
 	for (int a=0; a < 35; a++) Fstart[a] = f1[a] = 0;
@@ -89,22 +86,22 @@ void determine() {
 
 	//we know that F[0] == 1, as that's a necessary property
 
-	if (inter[0] == 0) g1[0] = 1;
+	if (inter[0] == 0) f1[0] = 1;
 	if (inter[0] == -1 || inter[0] == -2) return;
 
-	if (inter[0] == 1) g1[0] = 0;
-	if (inter[0] == 2) g1[0] = -1;
+	if (inter[0] == 1) f1[0] = 0;
+	if (inter[0] == 2) f1[0] = -1;
 	F[0] = 1;
 
 	for (int i=0; i<n; i++) { //defacto rule; there is no other possible value for g1[i] -> F[i]
 
 		if (inter[i] == 2) { 
-			g1[i] = -1;
-			F[i] = 1;
+			F[i] = -1;
+			//Fstart[i] = 1;
 		}
 		if (inter[i] == -2) {
-		    g1[i] = 1;
-		    F[i] = -1;
+		    F[i] = 1;
+		    //Fstart[i] = -1;
 		}
 
 	}
@@ -127,7 +124,7 @@ bool oddNumber(int* F, int n) {
 void finalStep() {
 
 	for (int i=1; i<35; i++) {
-		if (F[i] != 0) continue;
+		if (f1[i] != 0) continue;
 
 		//two ways we can go: if inter[i] == 0 or if inter[i] == -1/+1
 
@@ -141,25 +138,25 @@ void finalStep() {
 			}
 
 			if (F[i-k] == -1 && inter[i] == -1) { //forced case
-				g1[i] = 1;
-				F[i] = 0;
+				f1[i] = 1;
+				//Fstart[i] = 0;
 			}
 
 			else if (F[i-k] == 1 && inter[i] == 1) { //forced case
-				g1[i] = -1;
-				F[i] = 0;
+				f1[i] = -1;
+				//Fstart[i] = 0;
 
 			}
 
 			else if (F[i-k] == 1 && inter[i] == -1) { //can either have F[i] = 0 or F[i] = -1; going to guess -1 is better
-				g1[i] = 0;
-				F[i] = -1;
+				f1[i] = 0;
+				//Fstart[i] = -1;
 
 			}
 
 			else if (F[i-k] == -1 && inter[i] == 1) { //can either have F[i] = 0 or F[i] = 1; going to guess 1 is better
-				g1[i] = 0;
-				F[i] = 1;
+				f1[i] = 0;
+				//Fstart[i] = 1;
 
 			}
 		}
@@ -182,29 +179,29 @@ void finalStep() {
 				int r = rand() % 2;
 				//cout << "r: " << r << endl;
 				if (r == 0 && F[i-w] == -1) {
-					g1[i] = 1;
-					F[i] = 1;
+					f1[i] = 1;
+					//Fstart[i] = 1;
 				}
 
 
 				else if (r == 1 && F[i-w] == -1) {
-					g1[i] = 0;
-					F[i] = 0;
+					f1[i] = 0;
+					//Fstart[i] = 0;
 				}
 
 				else if (r == 0 && F[i-w] == 1) {
-					g1[i] = -1;
-					F[i] = -1;
+					f1[i] = -1;
+					//Fstart[i] = -1;
 
 				}
 
 				else if (r == 1 && F[i-w] == 1) {
-					g1[i] =0;
-					F[i] = 0;
+					f1[i] =0;
+					//Fstart[i] = 0;
 				}
 				else {
-					g1[i] = 0;
-					F[i] = 0;
+					f1[i] = 0;
+					//Fstart[i] = 0;
 				}
 
 			//}
@@ -213,32 +210,15 @@ void finalStep() {
 
 	
 	}
-	//repeat(f1, g1, maxf1, n, 1, 0);
-	//repeat(F, F, 35, n, 1, 0);
-	//printAns();
-	if (!isPeriodic(F,n) && oddNumber(F,n) && checkAlt(F)) printAns();
+	repeat(f1, g1, maxf1, n, 1, 0);
+	combine(g1,g2,g3);
+	printAns();
+	//if (isPeriodic(F,n) && oddNumber(F,n)) printAns();
 
 }
 
 
-////////////////////////////////////////////////////////////////
-bool checkAlt(int* v) {
-	if (v[0] != 1) return false;
-	int sign = -1;
-	
-	for (int i=1; i<n; i++) {
-		if (v[i] == 0) continue;
-		if (v[i] == sign) return false;
-		if (v[i] == -sign) {
-			sign = -sign;
-		}
-	}
-	if (sign == -1) {
-		return false;
-	} else {
-	return true;
-	}
-}
+
 
 
 ///////////////////////////////////////////////////////////////
@@ -248,54 +228,24 @@ int main() {
 	//sets up the coefficient vectors
 	setCoeffs();
 	
-	big:
-	while (true) {
 
-		while(true) {
-			
-	        repeat(repf2, f2, 5, n, 1, 0);
-			repeat(repf3, f3, 7, n, 1, 0);
+	// values set for a known polynomial that gives us a n=105 polygon
+	f3[0] = f3[8] = f3[13] = f3[14] = f3[17] = f3[19] = 1;
+	f3[4] = f3[9] = f3[15] = f3[16] = f3[18] = -1;
+	f2[0] = f2[7] = f2[13] = -1;
+	f2[4] = f2[10] = 1;
+	
+	repeat(f2, g2, maxf2, n, 1, 0);
+	repeat(f3, g3, maxf3, n, 1, 0);
 
-			repeat(f2, g2, maxf2, n, 1, 0);
-			repeat(f3, g3, maxf3, n, 1, 0);
+	for (int i=0; i<n; i++) {
+		inter[i] = g2[i] + g3[i];
+	}
+	//inter is all set up given the definition of g2 and g3 above
+	//now on to the algorithmic determination of g1
+	determine();
+	finalStep();
 
-			for (int i=0; i<n; i++) {
-				inter[i] = g2[i] + g3[i];
-			}
-		    //inter is all set up given the definition of g2 and g3 above
-		    //now on to the algorithmic determination of g1
-		    determine();
-		    finalStep();
-
-	       	// next iteration:
-	       	repf3[maxrepf3]--;
-	       	for(int j= maxrepf3; j>=1; j--) {  //decreasing
-	       	   if (repf3[j] < -1) {
-	           	repf3[j-1]--;
-	     	   	repf3[j]=1;
-	        	}
-
-	        	if(repf3[0]<-1) {
-	        	    repf3[0] = 1;
-	        	    goto outside;
-
-	        	}
-	        }       	        	        	
-		}
-		outside:
-			repf2[maxrepf2]--;
-    		for(int k= maxrepf2; k>=1; k--) {  //decreasing
-       			if (repf2[k] < -1) {
-          			repf2[k-1]--;
-     	  			repf2[k]=1;
-       			}
-
-       			if(repf2[0]<-1) {
-       				repf2[0] =1;
-          			goto big;
-        		}
-    		}
-		}
 
 	cout << "all done!" << endl;
 	return 0;
