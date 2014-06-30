@@ -7,19 +7,8 @@ const int q = 7; /*prime number 2 */
 const int l = 5;
 const int r = 1; /*additional value, our n is of the form pqr */
 
-<<<<<<< HEAD
-const maxf2 = 5;
-const maxf3 = 10;
-const maxf1 = maxf2 + maxf3 -1; 
-
-const maxrepf2 = 5;
-const maxrepf3 = 7;
-
-const int n = p*l*q*r;
-int g1[n], g2[n], g3[n], g4[n], f2[15], f3[21], f1[35],  F[n], repf2[5], repf2[7];
-=======
-const int maxf2 = 5;
-const int maxf3 = 10;
+const int maxf2 = 15;
+const int maxf3 = 21;
 const int maxf1 = maxf2 + maxf3 -1; 
 
 const int maxrepf2 = 5;
@@ -27,7 +16,6 @@ const int maxrepf3 = 7;
 
 const int n = p*l*q*r;
 int g1[n], g2[n], g3[n], g4[n], f2[15], f3[21], f1[35],  F[n], repf2[5], repf3[7];
->>>>>>> 1cefc428b253b1409875064123aa83f6d231adf9
 bool boolc[n][3];
 /*coefficient vectors, representing how we can generate the coefficients given our algorithms*/
 
@@ -38,10 +26,10 @@ bool isPeriodic(int*, int);
 bool hasPeriod(int*, int, int);
 void setCoeffs();
 bool determineBool(int* , int*);
-void repeat(int*, int* , int, int);
+void repeat(int*, int*, int, int, int, int);
 bool checkAlt(int*);
 void combine(int* , int* , int*);
-void finish(int);
+void finish(int, int);
 
 ////////////////////////////////////////////////////////////////////////
 /* setCoeffs - basic setup for all coefficient vectors use within */
@@ -51,14 +39,14 @@ void setCoeffs() {
 			boolc[x][y] = false;
 		}
 	}
-	for (int i=0; i<n; i++) g1[i] = g2[i] = g3[i] = F[i] = 0;
-<<<<<<< HEAD
-	for (int e=0; e<15; e++) f2[e] = 1;
-	for (int f=0; f<21; f++) f3[f] = 1;
-=======
+	for (int i=0; i<n; i++) g2[i] = g3[i] = F[i] = 0;
+	for (int j=0; j<n; j++) {
+		if (j%3 == 0) g1[j] = 0;
+		if (j%3 == 1) g1[j] = -1;
+		if (j%3 == 2) g1[j] = 1;
+	}
 	for (int e=0; e<15; e++) f2[e] = 0;
 	for (int f=0; f<21; f++) f3[f] = 0;
->>>>>>> 1cefc428b253b1409875064123aa83f6d231adf9
 	for (int m=0; m<5; m++) repf2[m] =1;
 	for (int n1=0; n1<7; n1++) repf3[n1] = 1;
 	//for (int h=0; h<35; h++) f1[h] = 0;
@@ -68,19 +56,21 @@ void setCoeffs() {
 and sets them to be the coefficient sequence of w.
 	recursive definition
 */
-void repeat(int* v, int* w, int num, int rep) {
-	int size1 = sizeof(v)/sizeof(int); 
-	int size2 = sizeof(w)/sizeof(int); //WATCH OUT; PRINT OUT, could give wrong results
+void repeat(int* v, int* w, int size1, int size2, int num, int rep) {
+	//int size1 = sizeof(v)/sizeof(int); 
+	//int size2 = sizeof(w)/sizeof(int); //WATCH OUT; PRINT OUT, could give wrong results
 
 	if (rep == size2) {
+		cout << "at end of repeat: " ;
+		printVec(w, n);
+		cout << endl;
 		return;
 	}
-
-	for (int i = rep; i < (size2/size1 + rep); i++ ) {
-		w[i] = num*v[i];
+	for (int i = rep; i < size1 + rep; i++ ) {
+		w[i] = num*v[i%size1];
 
 	}
-	repeat(v, w, -num, rep+size1);
+	repeat(v, w, size1, size2, -num, rep+size1);
 
 }
 
@@ -149,8 +139,12 @@ void combine(int* v, int* w, int *x) {
 //////////////////////////////////////////////////////////////
 /* finish - calculates all possible g1's from the boolean array, checks their
 /* validity as Reinhardt polynomials, and prints out any valid results */
-void finish(int start) {
+void finish(int start, int nb) {
 	//want the results to be equal to g1
+	start++;
+
+	printVec(g1, n);
+	cout << endl;
 	if (start == n+1) {
 		combine(g1,g2,g3);
 		if (checkAlt(F)) printAns();
@@ -158,19 +152,19 @@ void finish(int start) {
 
 	if (boolc[start][0]) {
 		g1[start] = -1;
-		finish(start+1);
+		finish(start, nb);
 	}	
 
-	if (boolc[start][1]) {
+	if (boolc[start][1] ) {
 		g1[start] = 0;
-		finish(start+1);
+		
+		finish(start, nb);
 	}
 
 	if (boolc[start][2]) {
 		g1[start] = 1;
-		finish(start+1);
+		finish(start, nb);
 	}
-
 }
 
 ///////////////////////////////////////////////////////////////
@@ -179,25 +173,21 @@ int main() {
 	cout << "START EXECUTION" << endl;
 	//sets up the coefficient vectors
 	setCoeffs();
-<<<<<<< HEAD
-
-	while (true) {
-
-		while(true) {
-			printVec(repf2, 5);
-			cout << endl;
-			printVec(repf3, 7);
-			cout << endl;
-			cout << endl;
-=======
 	
-
+	f3[0] = f3[8] = f3[13] = f3[14] = f3[17] = f3[19] = 1;
+	f3[4] = f3[9] = f3[15] = f3[16] = f3[18] = -1;
+	f2[0] = f2[7] = f2[13] = -1;
+	f2[4] = f2[10] = 1;
 	
-	repeat(f2, g2, 1, 0);
-	repeat(f3, g3, 1, 0);
+	repeat(f2, g2, maxf2, n, 1, 0);
+	//printVec(g2, n);
+	//cout << endl;
+	repeat(f3, g3, maxf3, n, 1, 0);
+	//printVec(g3, n);
+	//cout << endl;
 	determineBool(g2, g3);
-	finish(0);
-	big:
+	finish(0, 0);
+	/*big:
 	while (true) {
 
 		while(true) {
@@ -206,7 +196,6 @@ int main() {
 			//printVec(repf3, 7);
 			//cout << endl;
 			//cout << endl;
->>>>>>> 1cefc428b253b1409875064123aa83f6d231adf9
 	        repeat(repf2, f2, 1, 0);
 			repeat(repf3, f3, 1, 0);
 			repeat(f2, g2, 1, 0);
@@ -217,37 +206,13 @@ int main() {
 
 	       	// next iteration:
 	       	repf3[maxrepf3]--;
-<<<<<<< HEAD
-	       	for(int j= maxrepf3; j>1; j--) {  //decreasing
-=======
 	       	for(int j= maxrepf3; j>=1; j--) {  //decreasing
->>>>>>> 1cefc428b253b1409875064123aa83f6d231adf9
 	       	   if (repf3[j] < -1) {
 	           	repf3[j-1]--;
 	     	   	repf3[j]=1;
 	        	}
 
 	        	if(repf3[0]<-1) {
-<<<<<<< HEAD
-	        	    break;
-	        	}
-	        }       	        	        	
-		}
-
-		repf2[maxrepf2]--;
-    	for(int k= maxrepf2; k>1; k--) {  //decreasing
-       		if (repf2[k] < -1) {
-          		repf2[k-1]--;
-     	  		repf2[k]=1;
-       		}
-
-       		if(repf2[0]<-1) {
-          		break;
-        	}
-    	}
-	}
-
-=======
 	        	    repf3[0] = 1;
 	        	    goto outside;
 
@@ -268,16 +233,11 @@ int main() {
         		}
     		}
 		}
-	
->>>>>>> 1cefc428b253b1409875064123aa83f6d231adf9
+	*/
 	cout << "hello" << endl;
 	return 0;
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 1cefc428b253b1409875064123aa83f6d231adf9
 /****************************************************************/
 /* printAns, printGaps and printVec are simply print formatting functions */
 void printAns() {
