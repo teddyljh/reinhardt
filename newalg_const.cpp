@@ -172,49 +172,35 @@ void finalStep() {
 				w++;
 			}
 			
-			//cout << "i: " << i << " w: " << w << endl;
-			/*
-			if (1 == w) { 
-				g1[i] = 0;
-				F[i] = 0; 
+		    int r = rand() % 2;
+			
+			if (r == 0 && F[i-w] == -1) {
+				g1[i] = 1;
+				F[i] = 1;
 			}
-			else { */
-				int r = rand() % 2;
-				//cout << "r: " << r << endl;
-				if (r == 0 && F[i-w] == -1) {
-					g1[i] = 1;
-					F[i] = 1;
-				}
+			else if (r == 1 && F[i-w] == -1) {
+				g1[i] = 0;
+				F[i] = 0;
+			}
 
+			else if (r == 0 && F[i-w] == 1) {
+				g1[i] = -1;
+				F[i] = -1;
+			}
 
-				else if (r == 1 && F[i-w] == -1) {
-					g1[i] = 0;
-					F[i] = 0;
-				}
-
-				else if (r == 0 && F[i-w] == 1) {
-					g1[i] = -1;
-					F[i] = -1;
-
-				}
-
-				else if (r == 1 && F[i-w] == 1) {
-					g1[i] =0;
-					F[i] = 0;
-				}
-				else {
-					g1[i] = 0;
-					F[i] = 0;
-				}
-
-			//}
+			else if (r == 1 && F[i-w] == 1) {
+				g1[i] =0;
+				F[i] = 0;
+			}
+			else {
+				g1[i] = 0;
+				F[i] = 0;
+			}
 	
 		}
 
 	
 	}
-	//repeat(f1, g1, maxf1, n, 1, 0);
-	//repeat(F, F, 35, n, 1, 0);
 	//printAns();
 	if (!isPeriodic(F,n) && oddNumber(F,n)) printAns();
 
