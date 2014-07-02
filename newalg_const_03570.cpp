@@ -276,67 +276,74 @@ int explicitCases() {
 							g1[a] = 0; F[a] = g1[a] + g2[a] + g3[a];
 							g1[b] = 0; F[b] = g1[b] + g2[b] + g3[b];
 					}
-					////////////ABOVE THIS LINE IS VALID//////////////////////////////
-					else if (inter[a] == 0 && inter[b] == -2) { //-2, so only -1/1 case
-							g1[i] = 1; F[i] = 0;
-							g1[a] = -1; F[a] = g1[a] + g2[a] + g3[a];
-							g1[b] = 1; F[b] = g1[b] + g2[b] + g3[b];
+					
+					else if (inter[a] == -2 && inter[b] == 0) { //-2, so only -1/1 case
+							g1[i] = -1; F[i] = 0;
+							g1[a] = 1; F[a] = g1[a] + g2[a] + g3[a];
+							g1[b] = -1; F[b] = g1[b] + g2[b] + g3[b];
 					}
 				}
+				
 				else if (F[d] == -1) {
-					if (inter[a] == -1 && inter[b] == 1) { //only the 0 case
-							g1[i] = 0; F[i] = -1;
-							g1[a] = 0; F[a] = g1[a] + g2[a] + g3[a];
-							g1[b] = 0; F[b] = g1[b] + g2[b] + g3[b];
+					if (inter[a] == -2 && inter[b] == 2) { //only the 0 case
+							g1[i] = -1; F[i] = 0;
+							g1[a] = 1; F[a] = g1[a] + g2[a] + g3[a];
+							g1[b] = -1; F[b] = g1[b] + g2[b] + g3[b];
 					}
 				}
-				else if (inter[a] == -1 && inter[b] == 0) { //only relies on F[c]; one case
-						g1[i] = 0; F[i] = -1;
-						g1[a] = 0; F[a] = g1[a] + g2[a] + g3[a];
-						g1[b] = 0; F[b] = g1[b] + g2[b] + g3[b];
+				
+				else if (inter[a] == -2 && inter[b] == 1) { //only relies on F[c]; one case
+						g1[i] = -1; F[i] = 0;
+						g1[a] = 1; F[a] = g1[a] + g2[a] + g3[a];
+						g1[b] = -1; F[b] = g1[b] + g2[b] + g3[b];
 				}
 
+
 			}
+			
 			if (F[c] == -1) {
 				if (F[d] == 1) {
-					if (inter[a] == 2 && inter[b] == -2) {
-						g1[i] = 1; F[i] = 0;
-						g1[a] = -1; F[a] = g1[a] + g2[a] + g3[a];
-						g1[b] = 1; F[b] = g1[b] + g2[b] + g3[b];
+					if (inter[a] == 1 && inter[b] == -1) {
+						g1[i] = 0; F[i] = 1;
+						g1[a] = 0; F[a] = g1[a] + g2[a] + g3[a];
+						g1[b] = 0; F[b] = g1[b] + g2[b] + g3[b];
 					}
 				} 
+				
 				else if (F[d] == -1) {
-					if (inter[a] == 2 && inter[b] == 0) {
-						g1[i] = 1; F[i] = 0;
-						g1[a] = -1; F[a] = g1[a] + g2[a] + g3[a];
-						g1[b] = 1; F[b] = g1[b] + g2[b] + g3[b];
+					if (inter[a] == 0 && inter[b] == 2) {
+						g1[i] = -1; F[i] = 0;
+						g1[a] = 1; F[a] = g1[a] + g2[a] + g3[a];
+						g1[b] = -1; F[b] = g1[b] + g2[b] + g3[b];
  					}
  					else if (inter[a] == inter[b] == 1) {
- 						g1[i] = 0; F[i] = -1;
+ 						g1[i] = 0; F[i] = 1;
 						g1[a] = 0; F[a] = g1[a] + g2[a] + g3[a];
 						g1[b] = 0; F[b] = g1[b] + g2[b] + g3[b];
  					}
 				}
-				if (inter[a] == 2 && inter[b] == -1) { //only relies on F[c]
-					g1[i] = 1; F[i] = 0;
-					g1[a] = -1; F[a] = g1[a] + g2[a] + g3[a];
-					g1[b] = 1; F[b] = g1[b] + g2[b] + g3[b];
-				}
-
-
-			}
-			if (F[d] == -1) {
-				if (inter[a] == 0 && inter[b] == 1) {
-					g1[i] = 0; F[i] = -1;
+				
+				if (inter[a] == 1 && inter[b] == 0) { //only relies on F[c]
+					g1[i] = 0; F[i] = 1;
 					g1[a] = 0; F[a] = g1[a] + g2[a] + g3[a];
 					g1[b] = 0; F[b] = g1[b] + g2[b] + g3[b];
 				}
+
+
+			}
+			
+			if (F[d] == -1) {
+				if (inter[a] == -1 && inter[b] == 2) {
+					g1[i] = -1; F[i] = 0;
+					g1[a] = 1; F[a] = g1[a] + g2[a] + g3[a];
+					g1[b] = -1; F[b] = g1[b] + g2[b] + g3[b];
+				}
 			}
 			if (F[d] == 1) {
-				if (inter[a] == 1 && inter[b] == -2) {
-					g1[i] = 1; F[i] = 0;
-					g1[a] = -1; F[a] = g1[a] + g2[a] + g3[a];
-					g1[b] = 1; F[b] = g1[b] + g2[b] + g3[b];
+				if (inter[a] == 0 && inter[b] == -1) {
+					g1[i] = 0; F[i] = 1;
+					g1[a] = 0; F[a] = g1[a] + g2[a] + g3[a];
+					g1[b] = 0; F[b] = g1[b] + g2[b] + g3[b];
 				}
 			}
 
@@ -484,7 +491,7 @@ if (inter[i] == -1 && F[i-k1] == 1) {
 	}
 
 }
-
+return 1;
 
 
 }
