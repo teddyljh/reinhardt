@@ -354,43 +354,80 @@ int explicitCases() {
 
 		}
 
-
-
-
-
-
 		//ZERO CASES (NEED TO FIX THOSE/DEAL WITH THOSE LATER)
 		else if (inter[i] == 0){ //in this case, inter[i] = 0 or inter[i] = 2/-2 but that case has already been delt with 
-			int w=1;
-			while (F[i-w] == 0) {	
-				w++;
+			if (F[c] == 1) {
+				if (F[d] == 1) {
+					if (inter[a] == 0 && inter[b] == -2) {
+						g1[i] = 1; F[i] = 1;
+						g1[a] = -1; F[a] = g1[a] + g2[a] + g3[a];
+						g1[b] = 1; F[b] = g1[b] + g2[b] + g3[b];
+					}
+					if (inter[a] == -1 == inter[b]) {
+						g1[i] = 0; F[i] = 0;
+						g1[a] = 0; F[a] = g1[a] + g2[a] + g3[a];
+						g1[b] = 0; F[b] = g1[b] + g2[b] + g3[b];
+					}
+					if (inter[a] == -2 && inter[b] == 0) {
+						g1[i] = -1; F[i] = -1;
+						g1[a] = 1; F[a] = g1[a] + g2[a] + g3[a];
+						g1[b] = -1; F[b] = g1[b] + g2[b] + g3[b];
+					}
+				}
+				if (F[d] == -1) {
+					if (inter[a] == 2 && inter[b] == 0) {
+						g1[i] = 1; F[i] = 1;
+						g1[a] = -1; F[a] = g1[a] + g2[a] + g3[a];
+						g1[b] = 1; F[b] = g1[b] + g2[b] + g3[b];
+					}
+				}
+				if (inter[a] == -2 && inter[b] == 1) {
+					g1[i] = -1; F[i] = -1;
+					g1[a] = 1; F[a] = g1[a] + g2[a] + g3[a];
+					g1[b] = -1; F[b] = g1[b] + g2[b] + g3[b];
+				}
 			}
-			
-		    int r = rand() % 2;
-			
-			if (r == 0 && F[i-w] == -1) {
-				g1[i] = 1;
-				F[i] = 1;
+			if (F[c] == -1) {
+				if (F[d] == 1) {
+					if (inter[a] == 2 && inter[b] == -2) {
+						g1[i] = 1; F[i] = 1;
+						g1[a] = -1; F[a] = g1[a] + g2[a] + g3[a];
+						g1[b] = 1; F[b] = g1[b] + g2[b] + g3[b];
+					}
+				}
+				if (F[d] == -1) {
+					if (inter[a] == 0 && inter[b] == 2) {
+						g1[i] = -1; F[i] = -1;
+						g1[a] = 1; F[a] = g1[a] + g2[a] + g3[a];
+						g1[b] = -1; F[b] = g1[b] + g2[b] + g3[b];
+					}
+					if (inter[a] == 1 == inter[b]) {
+						g1[i] = 0; F[i] = 0;
+						g1[a] = 0; F[a] = g1[a] + g2[a] + g3[a];
+						g1[b] = 0; F[b] = g1[b] + g2[b] + g3[b];
+					}
+				}
+				if (inter[a] == 2 && inter[b] == -1) {
+					    g1[i] = 1; F[i] = 1;
+						g1[a] = -1; F[a] = g1[a] + g2[a] + g3[a];
+						g1[b] = 1; F[b] = g1[b] + g2[b] + g3[b];
+				}
 			}
-			else if (r == 1 && F[i-w] == -1) {
-				g1[i] = 0;
-				F[i] = 0;
+			if (F[d] == -1) {
+				if (inter[a] == -1 && inter[b] == 2) {
+						g1[i] = -1; F[i] = -1;
+						g1[a] = 1; F[a] = g1[a] + g2[a] + g3[a];
+						g1[b] = -1; F[b] = g1[b] + g2[b] + g3[b];
+				}
+			}
+			if (F[d] == 1) {
+				if (inter[a] == 1 && inter[b] == -2) {
+						g1[i] = 1; F[i] = 1;
+						g1[a] = -1; F[a] = g1[a] + g2[a] + g3[a];
+						g1[b] = 1; F[b] = g1[b] + g2[b] + g3[b];
+				}
 			}
 
-			else if (r == 0 && F[i-w] == 1) {
-				g1[i] = -1;
-				F[i] = -1;
-			}
-
-			else if (r == 1 && F[i-w] == 1) {
-				g1[i] =0;
-				F[i] = 0;
-			}
-			else {
-				g1[i] = 0;
-				F[i] = 0;
-			}
-	
 		}
 
 	
@@ -492,7 +529,7 @@ if (inter[i] == -1 && F[i-k1] == 1) { //NEGATIVE ONE CASE
 
 }
 
-else if (inter[a] == 1 && F[i-k1] == -1) {
+else if (inter[i] == 1 && F[i-k1] == -1) {
 	if (F[c] == 1) {
 		if (F[d] == -1) {
 			if (inter[a] == -1 && inter[b] == 1) {
@@ -560,12 +597,115 @@ else if (inter[a] == 1 && F[i-k1] == -1) {
 	}
 
 }
+else if (inter[i] == 0) { //recursive cases for inter[i] == 0
+	if (F[c] == 1) {
+		if (F[d] == -1) {
+			if (inter[a] == 0 == inter[b]) {
+				g1[i] = 1; F[i] = 1;
+				g1[a] = -1; F[a] = g1[a] + g2[a] + g3[a];
+				g1[b] = 1; F[b] = g1[b] + g2[b] + g3[b];
+				recursiveCases(i+1);
+			}
+			if (inter[a] == -1 && inter[b] == 1) {
+				g1[i] = 0; F[i] = 0;
+				g1[a] = 0; F[a] = g1[a] + g2[a] + g3[a];
+				g1[b] = 0; F[b] = g1[b] + g2[b] + g3[b];
+				recursiveCases(i+1);
+			}
+		}
+		if (inter[a] == -1 && inter[b] == 0) {
+			g1[i] = 0; F[i] = 0;
+			g1[a] = 0; F[a] = g1[a] + g2[a] + g3[a];
+			g1[b] = 0; F[b] = g1[b] + g2[b] + g3[b];
+			recursiveCases(i+1);
+		}
+		if (inter[a] == 0 && inter[b] == -1) {
+			g1[i] = 1; F[i] = 1;
+			g1[a] = -1; F[a] = g1[a] + g2[a] + g3[a];
+			g1[b] = 1; F[b] = g1[b] + g2[b] + g3[b];
+			recursiveCases(i+1);
+		}
+	}
+	if (F[c] == -1) {
+		if (F[d] == 1) {
+			if (inter[a] == 0 == inter[b]) {
+				g1[i] = -1; F[i] = -1;
+				g1[a] = 1; F[a] = g1[a] + g2[a] + g3[a];
+				g1[b] = -1; F[b] = g1[b] + g2[b] + g3[b];
+				recursiveCases(i+1);
+			}
+			if (inter[a] == 1 && inter[b] == -1) {
+				g1[i] = 0; F[i] = 0;
+				g1[a] = 0; F[a] = g1[a] + g2[a] + g3[a];
+				g1[b] = 0; F[b] = g1[b] + g2[b] + g3[b];
+				recursiveCases(i+1);
+			}
+		}
+		if (inter[a] == 0 && inter[b] == 1) {
+			g1[i] = 1; F[i] = 1;
+			g1[a] = -1; F[a] = g1[a] + g2[a] + g3[a];
+			g1[b] = 1; F[b] = g1[b] + g2[b] + g3[b];
+			recursiveCases(i+1);
+		}
+		if (inter[a] == 1 && inter[b] == 0) {
+			g1[i] = 0; F[i] = 0;
+			g1[a] = 0; F[a] = g1[a] + g2[a] + g3[a];
+			g1[b] = 0; F[b] = g1[b] + g2[b] + g3[b];
+			recursiveCases(i+1);
+		}
+
+	}
+	if (F[d] == 1) {
+		if (inter[a] == 0 && inter[b] == -1) {
+			g1[i] = 0; F[i] = 0;
+				g1[a] = 0; F[a] = g1[a] + g2[a] + g3[a];
+				g1[b] = 0; F[b] = g1[b] + g2[b] + g3[b];
+				recursiveCases(i+1);
+		}
+		if (inter[a] == -1 && inter[b] == 0) {
+				g1[i] = -1; F[i] = -1;
+				g1[a] = 1; F[a] = g1[a] + g2[a] + g3[a];
+				g1[b] = -1; F[b] = g1[b] + g2[b] + g3[b];
+				recursiveCases(i+1);
+		}
+	}
+	if (F[d] == -1) {
+		if (inter[a] == 0 && inter[b] == 1) {
+				g1[i] = 0; F[i] = 0;
+				g1[a] = 0; F[a] = g1[a] + g2[a] + g3[a];
+				g1[b] = 0; F[b] = g1[b] + g2[b] + g3[b];
+				recursiveCases(i+1);
+		}
+		if (inter[a] == 1 && inter[b] == 0) {
+				g1[i] = 1; F[i] = 1;
+				g1[a] = -1; F[a] = g1[a] + g2[a] + g3[a];
+				g1[b] = 1; F[b] = g1[b] + g2[b] + g3[b];
+				recursiveCases(i+1);
+		}
+	}
+	if (inter[a] == 1 && inter[b] == -1) {
+		g1[i] = 1; F[i] = 1;
+		g1[a] = -1; F[a] = g1[a] + g2[a] + g3[a];
+		g1[b] = 1; F[b] = g1[b] + g2[b] + g3[b];
+		recursiveCases(i+1);
+	}
+	if (inter[a] == -1 && inter[b] == 1) {
+		g1[i] = -1; F[i] = -1;
+		g1[a] = 1; F[a] = g1[a] + g2[a] + g3[a];
+		g1[b] = -1; F[b] = g1[b] + g2[b] + g3[b];
+		recursiveCases(i+1);
+	}
+	if (inter[a] == 0 == inter[b]) {
+		g1[i] = 0; F[i] = 0;
+		g1[a] = 0; F[a] = g1[a] + g2[a] + g3[a];
+		g1[b] = 0; F[b] = g1[b] + g2[b] + g3[b];
+		recursiveCases(i+1);
+	}
+
+}
 
 return 1;
 }
-
-
-
 
 
 //////////////////////////////////////////////////////
