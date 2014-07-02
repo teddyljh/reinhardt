@@ -1,9 +1,0 @@
-## SLURM PROLOG ###############################################################
-##    Job ID : 242406
-##  Job Name : half.sh
-##  Nodelist : node[228-229]
-##      CPUs : 8
-##  Mem/Node : 32768 MB
-## Directory : /gpfs/home/mfeldma2/reinhardt
-##   Started : Wed Jun 25 13:31:43 EDT 2014
-###############################################################################
