@@ -10,7 +10,7 @@ const int p = 3; /*prime number 1 */
 const int q = 7; /*prime number 2 */
 const int r = 0; /*additional value, our n is of the form pqr */
 const int n = p*q*r;
-int a[n], b[n], c[n]; /*coefficient vectors, representing how we can generate the coefficients given our algorithms*/
+int g1[n], g2[n], g3, F[n]; /*coefficient vectors, representing how we can generate the coefficients given our algorithms*/
 
 /* function declaration, most important are set, testC, findB, enumA, and hasPeriod */
 void set(int*, int, int, int, int);
@@ -90,6 +90,17 @@ bool testC() {
     }
     return !isPeriodic(c, n);
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 /****************************************************************/

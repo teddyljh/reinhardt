@@ -28,8 +28,8 @@ for(int i=1; i<35; i++) //constructs b (bool array)
 
       if (val1 or val2 or val3 = 2)
       {
-                  b[1][i]=false
-                  b[2][i]=false
+                  b[1][i]=false;
+                  b[2][i]=false;
                   if(i<34)
                   {
                               b[3][i+1]=false

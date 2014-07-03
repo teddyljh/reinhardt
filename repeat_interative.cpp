@@ -184,30 +184,6 @@ void finish(int start, int nb) {
 
 	//want the results to be equal to g1
 	start++;
-
-	printVec(g1, n);
-	cout << endl;
-	if (start == n+1) {
-		combine(g1,g2,g3);
-		if (checkAlt(F)) printAns();
-		return;
-	}
-
-	if (boolc[start][0]) {
-		g1[start] = -1;
-		finish(start, nb);
-	}	
-
-	if (boolc[start][1] ) {
-		g1[start] = 0;
-		
-		finish(start, nb);
-	}
-
-	if (boolc[start][2]) {
-		g1[start] = 1;
-		finish(start, nb);
-	}
 }
 
 ///////////////////////////////////////////////////////////////
