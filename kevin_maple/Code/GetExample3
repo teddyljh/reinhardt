@@ -1,0 +1,107 @@
+GE := proc(P1,P2,A,B,C)
+    local a, i, II, SS, PT, PT2, S, BB, CC;
+    if nargs <= 2 then 
+        RETURN(GE(P1, P2, a, [1, a$(P1-1)], [0, a$(P2-1)]) union 
+               GE(P1, P2, a, [0, a$(P1-1)], [1, a$(P2-1)]));
+    fi;
+
+    PT := [seq(B[(i-1) mod P1 + 1]*(-1)^(ceil(i/P1)-1) + 
+               C[(i-1) mod P2 + 1]*(-1)^(ceil(i/P2)-1), i=1..P1*P2)];
+
+    #lprint(B, C, PT);
+#    breakpoint();
+
+    S := 0;
+    PT2 := subs(A=100, PT);
+
+    for i from 1 to nops(PT2) do
+        if abs(PT2[i]) > 50 then 
+            S := 0; 
+        elif abs(PT2[i]) = 2 then 
+            #lprint("Double 1/-1"); 
+            RETURN({}); 
+        elif S = 0 then 
+            S := PT2[i];
+        elif S = 1 and PT2[i] = 1 then 
+           #lprint("Two in a row"); 
+           RETURN({}); 
+        elif S = -1 and PT2[i] = -1 then 
+           #lprint("Two in a row"); 
+           RETURN({}); 
+        elif S = 1 and PT2[i] = -1 then S := -1;
+        elif S = -1 and PT2[i] = 1 then S := 1;
+        elif PT2[i] = 0 then S := S;
+        fi;
+    od;
+    if not LexSmall(PT2) then RETURN({}); fi;
+
+    if select(y->abs(y) > 50 , PT2) = [] then 
+        if not Periodic(PT2, P1) and not Periodic(PT2, P2) then 
+            lprint(B,C,PT); RETURN({[B,C,PT]}); 
+        else
+            RETURN({}); 
+        fi;
+    fi;
+
+    for i from 1 to max(P1, P2) do 
+        if i <= P1 then if B[i] = A then 
+            II := i; SS := 1; break;
+        fi; fi;
+        if i <= P2 then if C[i] = A then 
+            II := i; SS := 2; break;
+        fi; fi;
+    od;
+
+    if SS = 1 then 
+        BB := copy(B): 
+        BB[i] := -1;
+        SS := GE(P1, P2, A, BB, C);
+        BB[i] := 0;
+        SS := SS union GE(P1, P2, A, BB, C);
+        BB[i] := 1;
+        SS := SS union GE(P1, P2, A, BB, C);
+    else
+        CC := copy(C): 
+        CC[i] := -1;
+        SS := GE(P1, P2, A, B, CC);
+        CC[i] := 0;
+        SS := SS union GE(P1, P2, A, B, CC);
+        CC[i] := 1;
+        SS := SS union GE(P1, P2, A, B, CC);
+     fi;
+     RETURN(SS);
+end:
+
+Periodic := proc(PT, P1)
+    local i;
+    for i from 1 to nops(PT) - P1 do
+        if not PT[i] = - PT[i+P1] then RETURN(false); fi;
+    od;
+    RETURN(true);
+end:
+
+#stopat(Periodic);
+
+LexSmall := proc(PT2)
+    local ST, STL, i;
+    for i from 1 to nops(PT2) do 
+        if abs(PT2[i]) = 0 then break; fi;
+    od;
+    ST := i-1;
+
+    STL := 1;
+    for i from 2 to nops(PT2) do 
+        if abs(PT2[i]) <> 1 then STL := infinity; fi;
+        if abs(PT2[i]) = 1 then 
+            STL := min(STL, i); 
+            if i - STL+1 > ST then breakpoint(); RETURN(false); fi;
+        fi;
+    od;
+
+    RETURN(true);
+end:
+
+#stopat(LexSmall);
+
+    
+#breakpoint := proc() end: stopat(breakpoint);

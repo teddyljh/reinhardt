@@ -134,10 +134,10 @@ void PolygonSearch::hit() {
     // both the forward and backward sums from rv[k].  First check that the
     // forward sum from rv[0] lexically exceeds the backward sum from
     // rv[0].
-    int sum = rv[0];
-    for (i=1; i<=r; i++) {
-        sum += rv[r+1-i];
-        if (sum > sumrv[i]) return;
+    int sum = rv[0];                    //DIHEDRAL CHECK SITUATION
+    for (i=1; i<=r; i++) {              //if in normal position already, they keep it
+        sum += rv[r+1-i];               //does NOT move them into normal position
+        if (sum > sumrv[i]) return;     //WHAT I WANT TO DO IS MOVE IT INTO NORMAL POSITION
         if (sum < sumrv[i]) break;
     }
 
