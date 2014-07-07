@@ -17,8 +17,12 @@ const int maxrepf3 = 3;
 
 const int n = p*l*q*r;
 int g1[n], g2[n], g3[n], f2[21], f3[15], F[n], inter[n], repf2[7], repf3[5];
-bool done[n];
-bool boolc[n][3];
+
+int prev1 = 0;
+int prev2 = 0;
+int prev3 = 0;
+
+int result = 0;
 /*coefficient vectors, representing how we can generate the coefficients given our algorithms*/
 
 void printVec(int*, int);
@@ -33,19 +37,13 @@ void zeroOut(int*);
 bool oddNumber(int*, int);
 bool checkAlt(int*);
 void set(int,int,int,int);
-int produceArray(int, int , int , int ,int); 
+int produceArray(int); 
 
 ////////////////////////////////////////////////////////////////////////
 /* setCoeffs - basic setup for all coefficient vectors use within */
 void setCoeffs() {
-	for (int x=0; x < n; x++) {
-		for (int y=0; y <n ; y++ ){
-			boolc[x][y] = false;
-		}
-	}
 	for (int i=0; i<n; i++) g2[i] = g3[i] = inter[i] = 0;
 	for (int j=0; j<n; j++) g1[j] = F[j] = 0;
-	for (int h=0; h<n; h++) done[h] = false;
 	for (int e=0; e<21; e++) f2[e] = 0;
 	for (int f=0; f<15; f++) f3[f] = 0;
 	for (int s=0; s<5; s++) repf3[s] = 0;
@@ -104,7 +102,7 @@ int baseCases() { //sets up holdfast, required values
 		if (inter[35] == 2 || inter[70] == -2 || inter[35] == 1 || inter[70] == -1) return 0;
 		set(0, -1, 1, -1);
 	}
-	done[0] = done[35] = done[70] = true;
+	
 	return 1;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -128,15 +126,15 @@ void reset(int i) {
 
 
 /////////////////////////////////////////////////////////////////////////
-int produceArray(int i, int prev1, int prev2, int prev3, int result) {
+int produceArray(int i) {
 	if (result == 10) {
 		return result;
 	}
 	
-	cout << "i: " << i << " " << "result: " << result << " " << "prevs: " << prev1 << " " << prev2 << " " << prev3 << endl;
+	//cout << "i: " << i << " " << "result: " << result << " " << "prevs: " << prev1 << " " << prev2 << " " << prev3 << endl;
 	if (i==35) {
-		printAns();
-		//if (!isPeriodic(F,n) && oddNumber(F,n) && checkAlt(F)) printAns();
+		//printAns();
+		if (!isPeriodic(F,n) && oddNumber(F,n) && checkAlt(F)) printAns();
 		//zeroOut(F);
 		return result;
 	}
@@ -148,9 +146,14 @@ int produceArray(int i, int prev1, int prev2, int prev3, int result) {
 		//(-1, 1, -1)
 		if ((prev1 != 1) && (inter[i+35] <= 0) && (inter[i+70] >= 0) && (prev2 != inter[i+35] +1) && (prev3 != inter[i+70] - 1)) {
 			set(i,-1,1,-1);
+			int val1[] = {prev1, prev2, prev3};
 			if (inter[i+35] + 1 != 0) prev2 = inter[i+35] +1;
 			if (inter[i+70] - 1 != 0) prev3 = inter[i+70] - 1;
-			 result = produceArray(i+1, 1, prev2, prev3,  result);
+			prev1 = 1;
+			result = produceArray(i+1);
+			prev1 = val1[0];
+			prev2 = val1[1]; 
+			prev3 = val1[2];
 			 reset(i);	
 		}
 
@@ -168,9 +171,14 @@ int produceArray(int i, int prev1, int prev2, int prev3, int result) {
 		//(1, -1, 1)
 		if ((prev1 != -1) && (inter[i+35] >= 0) && (inter[i+70] <= 0) && (prev2 != inter[i+35] - 1) && (prev3 != inter[i+70]+1)) {
 			set(i,1,-1,1);
+			int val2[] = {prev1, prev2, prev3};
 			if (inter[i+35] - 1 != 0) prev2 = inter[i+35] -1;
 			if (inter[i+70] + 1 != 0) prev3 = inter[i+70] + 1;
-			result = produceArray(i+1, -1, prev2, prev3,  result);
+			prev1 = -1; 
+			result = produceArray(i+1);
+			prev1 = val2[0]; 
+			prev2 = val2[1]; 
+			prev3 = val2[2];
 			reset(i);
 		}
 		
@@ -187,18 +195,27 @@ int produceArray(int i, int prev1, int prev2, int prev3, int result) {
 		if ((prev1 != 1) && (inter[i+35] != 2) && (inter[i+35] != -2) && (inter[i+70] != 2) && (inter[i+70] != -2) && (prev2 != inter[i+35])
 			&& (prev3 != inter[i+70])) {
 			set(i,0,0,0);
+			int val3[] = {prev1, prev2, prev3};
 			if (inter[i+35] != 0) prev2 = inter[i+35] ;
 			if (inter[i+70] != 0) prev3 = inter[i+70];
-			result = produceArray(i+1, 1, prev2, prev3, result);
+			prev1 = 1;
+			result = produceArray(i+1);
+			prev1 = val3[0];
+			prev2 = val3[1]; 
+			prev3 = val3[2];
 			reset(i);
 		}
 
 		//(-1, 1, -1)
 		if ((inter[i+35] <= 0) && (inter[i+70] >= 0) && (prev2 != inter[i+35] +1) && (prev3 != inter[i+70] - 1)) {
 			set(i,-1,1,-1);
+			int val4[] = {prev1, prev2, prev3};
 			if (inter[i+35] + 1 != 0) prev2 = inter[i+35] +1;
 			if (inter[i+70] - 1 != 0) prev3 = inter[i+70] - 1;
-			 result =produceArray(i+1, prev1, prev2, prev3,  result);
+			 result =produceArray(i+1);
+			 prev1 = val4[0];
+			 prev2 = val4[1];
+			 prev3 = val4[2];
 			 reset(i);	
 		}
 
@@ -218,18 +235,27 @@ int produceArray(int i, int prev1, int prev2, int prev3, int result) {
 		if ((prev1 != -1) && (inter[i+35] != 2) && (inter[i+35] != -2) && (inter[i+70] != 2) && (inter[i+70] != -2) && (prev2 != inter[i+35])
 			&& (prev3 != inter[i+70])) {
 			set(i,0,0,0);
+			int val5[] = {prev1, prev2, prev3};
 			if (inter[i+35] != 0) prev2 = inter[i+35] ;
 			if (inter[i+70] != 0) prev3 = inter[i+70];
-			result = produceArray(i+1, -1, prev2, prev3, result);
+			prev1 = -1; 
+			result = produceArray(i+1);
+			prev1 = val5[0];
+			prev2 = val5[1];
+			prev3 = val5[2]; 
 			reset(i);
 		}
 
 		//(1, -1, 1)
 		if ((inter[i+35] >= 0) && (inter[i+70] <= 0) && (prev2 != inter[i+35] - 1) && (prev3 != inter[i+70]+1)) {
 			set(i,1,-1,1);
+			int val6[] = {prev1, prev2, prev3};
 			if (inter[i+35] - 1 != 0) prev2 = inter[i+35] -1;
 			if (inter[i+70] + 1 != 0) prev3 = inter[i+70] + 1;
-			result = produceArray(i+1, prev1, prev2, prev3,  result);
+			result = produceArray(i+1);
+			prev1 = val6[0];
+			prev2 = val6[1];
+			prev3 = val6[2];
 			reset(i);
 		}
 		reset(i);
@@ -242,32 +268,46 @@ int produceArray(int i, int prev1, int prev2, int prev3, int result) {
 		
 		//(1, -1, 1)
 		if ((prev1 != 1) && (inter[i+35] >= 0) && (inter[i+70] <= 0) && (prev2 != inter[i+35] - 1) && (prev3 != inter[i+70]+1)) {
-			cout << "in 0 case: choosing 1" << endl; 
+			//cout << "in 0 case: choosing 1" << endl; 
 			set(i,1,-1,1);
+			int val7[] = {prev1, prev2, prev3};
 			if (inter[i+35] - 1 != 0) prev2 = inter[i+35] -1;
 			if (inter[i+70] + 1 != 0) prev3 = inter[i+70] + 1;
-			result= produceArray(i+1, 1, prev2, prev3,  result);
+			prev1 = 1; 
+			result= produceArray(i+1);
+			prev1 = val7[0];
+			prev2 = val7[1]; 
+			prev3 = val7[2];
 			reset(i);
 		}
 
 		//(-1, 1, -1)
 		if ((prev1 != -1) && (inter[i+35] <= 0) && (inter[i+70] >= 0) && (prev2 != inter[i+35] +1) && (prev3 != inter[i+70] - 1)) {
-			cout << "in 0 case: choosing -1" << endl;
+			//cout << "in 0 case: choosing -1" << endl;
 			set(i,-1,1,-1);
+			int val8[] = {prev1, prev2, prev3};
 			if (inter[i+35] + 1 != 0) prev2 = inter[i+35] +1;
 			if (inter[i+70] - 1 != 0) prev3 = inter[i+70] - 1;
-			 result = produceArray(i+1, -1, prev2, prev3,  result);
+			prev1 = -1; 
+			 result = produceArray(i+1);
+			 prev1 = val8[0];
+			 prev2 = val8[1];
+			 prev3 = val8[2];
 			 reset(i);	
 		}
 
 		// (0,0,0)
 		if ((inter[i+35] != 2) && (inter[i+35] != -2) && (inter[i+70] != 2) && (inter[i+70] != -2) && (prev2 != inter[i+35])
 			&& (prev3 != inter[i+70])) {
-			cout << "in 0 case: choosing 0" << endl;
+			//cout << "in 0 case: choosing 0" << endl;
 			set(i,0,0,0);
+			int val9[]= {prev1, prev2, prev3};
 			if (inter[i+35] != 0) prev2 = inter[i+35] ;
 			if (inter[i+70] != 0) prev3 = inter[i+70];
-			result = produceArray(i+1, prev1, prev2, prev3, result);
+			result = produceArray(i+1);
+			prev1 = val9[0];
+			prev2 = val9[1]; 
+			prev3 = val9[2];
 			reset(i);
 		}
 		reset(i);
@@ -321,17 +361,11 @@ int main() {
 	setCoeffs();
 	
 
-	/*f2[0] = f2[8] = f2[13] = f2[14] = f2[17] = f2[19] = 1;
-	f2[4] = f2[9] = f2[15] = f2[16] = f2[18] = -1;
+	f3[0] = f3[6] = f3[8] = f3[10] = f3[14] = 1;
+	f3[4] = f3[7] = f3[9] = f3[11] = -1;
 
-	f3[4] = f3[10] = 1;
-	f3[0] = f3[7] = f3[13] = -1;*/
-
-	f3[0] = f3[6] = f3[8] = f3[10] = f3[14] = -1;
-	f3[4] = f3[7] = f3[9] = f3[11] = 1;
-
-	f2[3] = f2[5] = f2[11] = f2[17] = -1;
-	f2[2] = f2[6] = f2[12] = f2[18] = 1;
+	f2[3] = f2[5] = f2[11] = f2[17] = 1;
+	f2[2] = f2[6] = f2[12] = f2[18] = -1;
 
 
 	repeat(f2, g2, maxf2, n, 1, 0);
@@ -345,7 +379,11 @@ int main() {
 	if (!baseCases()) cout << "failed base cases" << endl;
 	
 	int result = 0;
-	result = produceArray(1, 1, -1, 1, result);
+	prev1 = 1;
+	prev2 = -1; 
+	prev3 = 1; 
+ 
+	result = produceArray(1);
 	cout << "END RESULT IS: " << result << endl;
 	
 
