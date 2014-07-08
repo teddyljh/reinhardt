@@ -1,3 +1,15 @@
+///////////////////////////////////////////
+/* polygonSearch.cpp
+
+class implementation for iterating through every possible
+polygon wth n = 2pq sides.
+
+
+Michael Mossinghoff
+*/
+///////////////////////////////////////////
+
+
 #include <cstdlib>
 #include <fstream>
 #include <iostream>

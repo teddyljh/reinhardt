@@ -1,7 +1,7 @@
 //  main.cpp
 //  polyGen_alt
 //
-//  Copyright (c) 2014 Reinhardt Group. All rights reserved.
+//  Copyright (c) Teddy Liu, Summer@ICERM 2014. All rights reserved.
 //
 
 /*This code generates arrays of length n that starts with 1, followed by
@@ -236,44 +236,48 @@ void enumf(int a[], int t, int n)
 int main(int argc, const char * argv[])
 {
     
-    comb(pl);
-    comb(pq);
+    //comb(pl);
+    //comb(pq);
     
     
+    for (int k=0; k<capf2; k++) {
     for (int i = 0; i<pl; i++)
     {
-        enumf(polyf2[i], 0, pl-1);
+        cout << f2[k][i];
+        //enumf(polyf2[i], 0, pl-1);
         
     }
-    
-    cout<<"Permutation of f2:"<<countf2<<endl;
+        cout << endl;
+    }
+    //cout<<"Permutation of f2:"<<countf2<<endl;
     
     
     for (int j = 0; j<pq; j++)
     {
+        //cout << polyf3[j] << endl;
         enumf(polyf3[j], 0, pq-1);
     }
     
-    cout<<"Permutation of f3:"<<countf3<<endl;
+    //cout<<"Permutation of f3:"<<countf3<<endl;
     
     //check the array
-    /*for (int i = 0; i<1048576; i++)
+    for (int i = 0; i<1048576; i++)
      {
      for (int j = 0;j<pl; j++)
      {
      cout<<f3[i][j];
      }
      cout<<endl;
-     }*/
+     }
 
-    /*for (int i = 0; i<16384; i++)
+    for (int i = 0; i<16384; i++)
     {
         for (int j = 0;j<pq; j++)
         {
             cout<<f3[i][j];
         }
         cout<<endl;
-    }*/
+    }
     
     
     return 0;

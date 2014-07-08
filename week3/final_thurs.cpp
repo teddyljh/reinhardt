@@ -1,3 +1,16 @@
+////////////////////////////////////////
+/* final_thurs.cpp
+
+intermediate code towards the final result seen in 
+singlerun_fullalg.cpp. this code lacks the correct
+implementation of the prev1, prev2, and prev3 (i.e. the previous
+values for the given i, i+35, i+70 in the previous iteration).
+
+(c) Molly Feldman, Summer@ICERM 2014. All Rights Reserved. 
+*/
+///////////////////////////////////////
+
+
 #include <iostream>
 #include<string>
 using namespace std;

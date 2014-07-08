@@ -1,3 +1,15 @@
+/* newalg_all.cpp
+*
+* intermediate file towards the creation of 
+* cycle_all.cpp; partial implementation of
+* the final algorithm determined in monday_newprev.cpp
+* and cycle_all.cpp
+*
+* (c) Molly Feldman, Summer@ICERM 2014
+*/
+
+
+
 #include <iostream>
 using namespace std;
 
@@ -253,19 +265,15 @@ int main() {
 
 		while(true) {
 			
-	        repeat(repf2, f2, 5, n, 1, 0);
-			repeat(repf3, f3, 7, n, 1, 0);
+	     	for (i=0; i< maxrepf3; i++) {
+	     		cout << repf3[i];
+	     	}
+	     	cout << endl;
 
-			repeat(f2, g2, maxf2, n, 1, 0);
-			repeat(f3, g3, maxf3, n, 1, 0);
-
-			for (int i=0; i<n; i++) {
-				inter[i] = g2[i] + g3[i];
-			}
-		    //inter is all set up given the definition of g2 and g3 above
-		    //now on to the algorithmic determination of g1
-		    determine();
-		    finalStep();
+	     	for (int k=0; k<maxrepf2; k++) {
+	     		cout << repf2[k];
+	     	}
+	     	cout << endl;
 
 	       	// next iteration:
 	       	repf3[maxrepf3]--;
