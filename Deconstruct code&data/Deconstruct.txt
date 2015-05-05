@@ -1,0 +1,70 @@
+with(numtheory):
+
+Decon := proc(A, p)
+    local x, F, n, k, P2, i, t, P, Eq, Soln, T, s;
+
+    n := nops(A);
+
+    k := nops(p);
+
+    for i from 1 to k do 
+        t := degree(cyclotomic(p[i],-x^(n/p[i])));
+        F[i] := add(y[i][j]*x^j,j=0..n-t-1);
+    od;
+
+    P := add(A[i]*x^(i-1),i=1..n);
+
+    P2 := add(F[i]*cyclotomic(p[i],-x^(n/p[i])), i=1..k);
+    	
+    Eq := {seq(coeff(P2, x, i) = coeff(P, x, i), i = 0..nops(A)-1)}:
+
+    Soln := FindSolution (Eq, {});
+
+    if Soln = NULL then RETURN("fail"); fi;
+
+    T := {};
+    for s in Soln do 
+        for i from 1 to k do 
+            P[i] := subs(s, [seq(coeff(F[i], x, j-1),j=1..n/p[i])]):
+        od;
+        T := T union {[seq(P[i], i = 1..k)]};
+    od;
+
+    RETURN(T);
+end:
+
+FindSolution := proc(Eq, K)
+    local Soln, K2, y, Eq2, Y, yi, T, Soln2;
+
+    Soln := isolve(Eq);
+  
+    if Soln = NULL then RETURN({}); fi;
+
+    T := map(y->rhs(y), Soln);
+    T := select(type, T, realcons);
+    if max(op(T)) > 1 or min(op(T)) < -1 then RETURN({}); fi;
+
+    if indets(map(y->rhs(y), Soln)) = {} then RETURN({Soln union K}); fi;
+
+    Eq2 := remove(y->type(rhs(y), realcons), Soln);
+
+    Y := indets(map(y->lhs(y), Eq2))[1];
+
+    Soln2 := {};
+    for yi in [0, -1, 1] do 
+        K2 := K union {Y = yi} union select(y->type(rhs(y), realcons), Soln);
+        Eq2 := subs(K2, Eq);
+        Soln2 := Soln2 union FindSolution(Eq2, K2);
+#        if Soln2 <> {} then lprint(nops(Soln2)); fi; 
+        if Soln2 <> {} then RETURN(Soln2) fi;
+    od;
+    RETURN(Soln2);
+end:
+
+n := 
+[0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,-1,1,0,-1,1,-1,1,0,0,-1,1,-1,1,0,0,-1,0,0,1,-1,1,0,-1,1,0,0,0,0,-1,1,-1,0,0,0,1,-1,1,-1,1,-1,1,-1,0,1,-1,0,1,-1,0,0,1,0,0,-1,1,-1,1,-1,0,1,-1,0,0,1,-1,1,0,0,0,-1,0,0,1,-1,0,0,1,-1,1,-1,1,-1,1,0,0,0,-1,0,1];
+
+Decon(n, [3,5]);
+Decon(n, [5,7]);
+Decon(n, [3,7]);
+Decon(n, [3,5,7]);
