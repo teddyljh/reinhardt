@@ -34,8 +34,9 @@ def main():
     #eventual comparison with addition results
     for j in range(len(new)):
     	#print j
-    	allint.append(int(new[j]))
-    	sum += int(new[j])
+	while(new[j] != ''):
+	    	allint.append(int(new[j]))
+    		sum += int(new[j])
     polys.append(allint)
     #print sum
     
