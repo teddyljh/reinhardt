@@ -1,5 +1,6 @@
 /*/////////////////////////////////*/
 /* Michael's Code for generating sporadic Reinhardt Polygons, pqr method
+/* edited by Molly Feldman 
 /*//////////////////////////////*/
 
 #include <iostream>
@@ -7,16 +8,18 @@ using namespace std;
 
 int num = 0;
 const int p = 3; /*prime number 1 */
-const int q = 7; /*prime number 2 */
-const int r = 0; /*additional value, our n is of the form pqr */
-const int n = p*q*r;
-int a[n], b[n], c[n]; /*coefficient vectors, representing how we can generate the coefficients given our algorithms*/
+const int q = 5; /*prime number 2 */
+const int r = 2; /*additional value, our n is of the form pqr */
+const int l = 11;
+const int n = p*q*l*r;
+int a[n], b[n], c[n], f3[n]; /*coefficient vectors, representing how we can generate the coefficients given our algorithms*/
 
 /* function declaration, most important are set, testC, findB, enumA, and hasPeriod */
 void set(int*, int, int, int, int);
 void printVec(int*, int);
 void printGaps(int*, int);
 void printAns();
+
 bool testC();
 void findB(int, int);
 void enumA(int);
@@ -26,9 +29,10 @@ bool hasPeriod(int*, int, int);
 
 /* runs the creation of the coefficient sequences*/
 int main() {
-    for (int i=0; i<n; i++) a[i] = b[i] = c[i] = 0;
+    for (int i=0; i<n; i++) a[i] = b[i] = c[i] = f3[i] = 0;
     set(a, n, q, 0, 1);
     enumA(q);
+    
     return 0;
 }
 
@@ -50,7 +54,7 @@ void enumA(int i) {
         enumA(i-1);
         set(a, n, q, i, -1);
         enumA(i-1);
-        int k;
+       
     }
 }
 
@@ -58,6 +62,7 @@ void enumA(int i) {
 // k is the current index we need to set.
 void findB(int prior, int k) {
     //cout << "in findB" << endl;
+
     if (k == n/p) {
         //cout << "printing" << endl;
         if (testC()) printAns();
@@ -77,9 +82,29 @@ void findB(int prior, int k) {
     }
 }
 
+
+
+
 bool testC() {
+
+    //HARDCODING IN f_3(x) = 1-z for n=210
+    f3[0]= 1;
+    //for (int j=0; j<n; j++) { cout << f3[j] << " ";}
+    //    cout << endl;
+
+    f3[1] = -1;
     
-    for (int i=0; i<n; i++) c[i] = a[i] + b[i];
+    f3[42] = -1;
+    f3[43] = 1;
+    f3[84] = 1;
+    f3[85] = -1;
+    f3[126] = -1;
+    f3[127] = 1;
+    f3[168] = 1;
+    f3[169] = -1;
+
+    
+    for (int i=0; i<n; i++) c[i] = a[i] + b[i] + f3[i];
     int prior = 1;
 
     for (int i=1; i<n; i++) {
@@ -92,14 +117,17 @@ bool testC() {
 }
 
 
+
 /****************************************************************/
 /* printAns, printGaps and printVec are simply print formatting functions */
 void printAns() {
-cout << num << " " << "a:";
+cout << num << endl;
     printVec(a, n);
     cout << endl;
     printVec(b, n);
     cout << endl;
+    printVec(f3, n);
+    cout << endl << endl;
     printVec(c, n);
     cout << endl;
     printGaps(c, n);

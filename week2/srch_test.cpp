@@ -7,8 +7,8 @@ using namespace std;
 
 int num = 0;
 const int p = 3; /*prime number 1 */
-const int q = 7; /*prime number 2 */
-const int r = 0; /*additional value, our n is of the form pqr */
+const int q = 5; /*prime number 2 */
+const int r = 2; /*additional value, our n is of the form pqr */
 const int n = p*q*r;
 int a[n], b[n], c[n]; /*coefficient vectors, representing how we can generate the coefficients given our algorithms*/
 

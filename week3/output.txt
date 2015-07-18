@@ -1,0 +1,4 @@
+START EXECUTION
+inter[0] is: 1
+inter[70] is: 1
+inter[35] is: -1

@@ -1,0 +1,60 @@
+LM := proc(g)
+    local g1, g2, gg, i;
+    g1 := LexMin(g);
+    g2 := LexMin([seq(g[-i],i=1..nops(g))]);
+    
+    gg := g1;
+    for i from 1 to nops(g) do 
+        if abs(g1[i]) < abs(g2[i]) then gg := g1; break; fi;
+        if abs(g1[i]) > abs(g2[i]) then gg := g2; break; fi;
+    od;
+  
+    for i from 1 to nops(g) do 
+        if abs(gg[i]) <> 0 then gg := signum(gg[i])*gg; break; fi;
+    od;
+    RETURN(gg);
+end:
+
+LexMin := proc(g)
+    local i, k, G;
+#    lprint(g);
+    G := [op(g), op(-g), op(g)]:
+    for k from 1 to nops(g) do 
+        for i from 1 to nops(g) do 
+            if abs(G[i]) > abs(G[i+k]) then 
+#                lprint(i,k);
+                G := G[k+1...k+nops(g)];
+                RETURN(LexMin(G));
+            fi;
+            if abs(G[i]) < abs(G[i+k]) then break; fi;
+        od;
+    od;
+    RETURN(g);
+end:
+
+IsLexMin := proc(g,r)
+    local i, k, G;
+    G := [op(g), op(-g), op(g)]:
+    for k from r to nops(g)-r by r do 
+        for i from 1 to nops(g) do 
+            if abs(G[i]) > abs(G[i+k]) then 
+                 RETURN(false);
+            fi;
+            if abs(G[i]) < abs(G[i+k]) then break; fi;
+        od;
+    od;
+    RETURN(true);
+end:
+
+IsLexMin2 := proc(g,r)
+    local i, k;
+    for k from r to nops(g)-r by r do 
+        for i from 1 to nops(g)-k do 
+            if abs(g[i]) > abs(g[i+k]) then 
+                 RETURN(false);
+            fi;
+            if abs(g[i]) < abs(g[i+k]) then break; fi;
+        od;
+    od;
+    RETURN(true);
+end:

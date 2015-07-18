@@ -1,0 +1,410 @@
+with(combinat);
+
+SP := proc(p,q,R,p1, p2)
+
+    local F, G, PartF, PartG, i, j, AL, f, g, pp, bit, P1, P2, GFlag, FFlag, 
+          r, count;
+
+    r := R;
+
+    P1 := p1;
+    P2 := p2;
+    if not add(i,i=P1)=r then ERROR("Bad Partition"); fi;
+    if type(nops(P1), odd) then ERROR("Bad Partition"); fi;
+    if type(nops(select(y->y=1, P2)), even) then ERROR("Bad Partition"); fi;
+
+    P1 := [op(P1), op(P1)];
+    P2 := [op(P2), op(P2)];
+
+    bit := 1;
+    for i from 1 to nops(P1) do 
+        if P2[i] = 0 then 
+            if type(i, even) then 
+                PartF[i] := map(y->bit*y,GetSubsetE(P1[i]+1));
+                PartG[i] := {[0$(P1[i]-1)]};
+            else
+                PartG[i] := map(y->bit*y,GetSubsetE(P1[i]+1));
+                PartF[i] := {[0$(P1[i]-1)]};
+            fi;
+        else
+            if type(i, even) then 
+                PartF[i] := map(y->bit*y,GetSubsetO(P1[i]+1));
+                PartG[i] := {[0$(P1[i]-1)]};
+            else
+                PartG[i] := map(y->bit*y,GetSubsetO(P1[i]+1));
+                PartF[i] := {[0$(P1[i]-1)]};
+            fi;
+            bit := -bit;
+        fi;
+    od;
+
+    GFlag := true;
+    G := {[]};
+    for i from 1 to (q+1)/2 do 
+        for j from 1 to nops(P1) do
+            if i = (q+1)/2 and j > nops(P1)/2 then break; fi;
+            if GFlag then 
+                if nops(G) < 1000000 then 
+                    G := map(A->op(map(y->[op(y), op(A)], G)), PartG[j]);
+                    lprint("i,j,G", i, j, nops(G));
+                    G := select(g->IsLexMin2(g, r), G);
+                    lprint("LM,i,j,G", i, j, nops(G));
+                else
+                    GFlag := false;
+                    G := G, PartG[j];
+                fi;
+            else
+                G := G, PartG[j];
+            fi;
+        od;
+    od;
+
+
+    F := {[]};
+    FFlag := true;
+    for i from 1 to (p+1)/2 do 
+        for j from 1 to nops(P1) do
+            if i = (p+1)/2 and j > nops(P1)/2 then break; fi;
+            if FFlag then
+                if nops(F) < 1000000 then 
+                    F := map(A->op(map(y->[op(y), op(A)], F)), PartF[j]);
+                    lprint("i,j,F", i, j, nops(F));
+                    F := select(f->IsLexMin2(f, r), F);
+                    lprint("LM,i,j,F", i, j, nops(F));
+                else
+                    FFlag := false;
+                    F := F, PartF[j];
+                fi;
+            else
+                F := F, PartF[j];
+            fi;
+        od;
+    od;
+
+    if FFlag = false or GFlag = false then 
+        lprint("One of F or G was too large"); 
+        save F, G, r, ""||(File)||".prepredata":
+        RETURN();
+    fi;
+
+    G := select(g->IsLexMin(g, r), G);
+    lprint("G", nops(G));
+
+    F := select(f->IsLexMin(f, r), F);
+    lprint("F", nops(F));
+
+    if nops(F) * nops(G) > 1000000 then 
+        lprint("Combined values of F and G was too large"); 
+        F := map(y->[-y[-1], op(y[1..-2])], F);
+        save F, G, r, ""||(File)||".predata":
+        RETURN();
+    fi;
+
+    F := {op(F)}:
+    F := map(y->[-y[-1], op(y[1..-2])], F);
+
+    G := {op(G)}:
+
+    AL := {};
+
+    if nops(G) > nops(F) then 
+        for f in F do 
+            AL := AL union map(g->LM(AddS(f,g)), G);
+            lprint("AL", nops(AL));
+        od; 
+    else
+        for g in G do
+            AL := AL union map(f->LM(AddS(f,g)), F);
+            lprint("AL", nops(AL));
+        od; 
+    fi;
+
+    lprint("AL", nops(AL));
+    for pp in numtheory[divisors](p*q*r) minus {p*q*r} do 
+        AL := select(y->not Periodic(y, pp), AL);
+    od;
+    lprint("AL-Final", nops(AL));
+
+#    save AL, ""||(File)||".data";
+    AL := map(LM, AL):
+#    AL := map(C105, AL):
+#    save AL, ""||(File)||".ndata";
+#    count := nops(AL);
+#    save count, ""||(File)||".count";
+
+    RETURN(AL);
+end:
+
+#stopat(SP);
+
+RemoveRedundancy := proc(G,r)
+
+    local G2, G3, g, p, i;
+
+    RETURN(G);
+ 
+    G2 := G;
+
+    p := nops(G[1])/r;
+
+    G3 := {}:
+
+    while G2 <> {} do 
+        g := G2[1];
+        G3 := G3 union {g};
+
+        g := {g};
+        for i from 1 to p do 
+            g := g union map(y->[op(y[(2*r+1)..-1]),op(-y[1..2*r])], g);
+        od;
+        G2 := G2 minus g;
+        if (nops(G3) = 0) mod 50 then lprint(nops(G3), nops(G2)); fi;
+    od;
+    RETURN(G3);
+end:
+#stopat(RemoveRedundancy);
+
+
+AddS := proc(y1, y2)
+    local n, n1, n2, i, Y1, Y2, Y;
+    n1 := nops(y1);
+    n2 := nops(y2);
+    n := lcm(n1, n2);
+    n1 := 2*n1;
+    n2 := 2*n2;
+    Y1 := [op(y1), op(-y1)];
+    Y2 := [op(y2), op(-y2)];
+
+    Y := NULL;
+    for i from 1 to n do
+        Y := Y, Y1[((i-1) mod n1) + 1] + Y2[((i-1) mod n2) + 1];
+    od;
+
+    RETURN([Y]);
+end: 
+
+#stopat(AddS);
+
+GetSubsetO := proc(r)
+    local A;
+
+#    RETURN({[o$r]});
+ 
+    A := permute([0$r, 1$r], r);
+    A := select(y->type(add(i,i=y),odd), A);
+
+    A := map(Rewrite, A);
+    
+    RETURN(A);
+end:
+GetSubsetE := proc(r)
+    local A;
+
+#    RETURN({[e$r]});
+ 
+    A := permute([0$r, 1$r], r);
+    A := select(y->type(add(i,i=y),even), A);
+
+    A := map(Rewrite, A);
+    
+    RETURN(A);
+end:
+
+Rewrite := proc(A)
+   local B, i, a;
+   i := 1;
+   B := NULL;
+   for a in A do 
+       if a = 1 then B := B, i; i := (-1)*i; fi;
+       if a = 0 then B := B, 0; fi;
+   od;
+   RETURN([B]);
+end:
+
+CyclicShifts := proc(y1)
+    local y2, S;
+
+    y2 := [seq(y1[-i],i=1..nops(y2))];
+    S := {seq([op(-y1[i+1..-1]), op(y1[1..i])],i=1..nops(y1))} union
+         {seq([op(-y2[i+1..-1]), op(y2[1..i])],i=1..nops(y2))};
+    S := S union map(y->-y, S);
+    RETURN(S);
+end:
+
+#stopat(CyclicShifts);
+
+Clean := proc(Set)
+    local S, S2, T;
+    RETURN(Set);
+
+    S := Set;
+#    S := map(y->[y[1], y[2], AddS(y[1], y[2])], S);
+    S2 := {};
+
+    while S <> {} do 
+        S2 := S2 union {S[1]};
+        T := CyclicShifts(S[1]);
+        S := S minus T; 
+        lprint(nops(S), nops(S2));
+    od;
+    RETURN(S2);
+end:
+
+#stopat(Clean);
+
+Remove2 := proc(Set, Set2)
+    local S, S2, T;
+
+    S := Set;
+    S := map(y->[y[1], y[2], AddS(y[1], y[2])], S);
+
+    S2 := Set2;
+    S2 := map(y->[y[1], y[2], AddS(y[1], y[2])], S2);
+
+    while S2 <> {} do 
+        T := CyclicShifts(S2[1][1], S2[1][2]);
+        T := map(y->AddS(y[1], y[2]), T);
+        S := remove(y->member(y[3], T), S);
+        S2 := remove(y->member(y[3], T), S2);
+#        S := S minus CyclicShifts(S[1][1], S[1][2]);
+        lprint(nops(S), nops(S2));
+    od;
+    RETURN(S);
+end:
+
+#stopat(Clean);
+
+Verify := proc(y1, y2)
+    local Y, i, bit, p, x;
+    if nargs = 1 then Y := y1 else Y := AddS(y1, y2); fi;
+  
+    for i from 1 to nops(Y) do;
+        if Y[i] <> 0 then bit := Y[i]; break; fi;
+    od;
+
+    for i from 1 to nops(Y) do;
+        if Y[i] <> 0 and Y[i] <> bit then RETURN(false); fi;
+        if Y[i] = bit then bit :=-bit; fi;
+    od;
+
+    p := add(Y[i]*x^i,i=1..nops(Y));
+    RETURN(divide(p, cyclotomic(2*nops(Y),x)));
+end:
+
+#stopat(Verify);
+
+ShiftP := proc(Match, Pattern)
+    local L, T, N, i, flag, j, LA, LB;
+
+    N := nops(Pattern);
+    L := [op(Pattern), op(-Pattern), op(Pattern)];
+
+    for i from 0 to 2*N do 
+        flag := true;
+        for j from 1 to N do 
+            if L[j+i] <> Match[1][j] then flag := false; break;  fi;
+        od;
+        if flag = true then break; fi;
+    od;
+    if flag then 
+
+        LA := [op(Match[1]), op(-Match[1]), op(Match[1])];
+        LB := [op(Match[2]), op(-Match[2]), op(Match[2])];
+
+        LA := [seq(LA[j+i],j=1..nops(Match[1]))];
+        LB := [seq(LB[j+i],j=1..nops(Match[2]))];
+
+        RETURN([LA, LB]);
+    fi;
+
+
+    for i from 0 to 2*N do 
+        flag := true;
+        for j from 1 to N do 
+            if L[3*N-j-i+1] <> Match[1][j] then flag := false; break;  fi;
+        od;
+        if flag = true then break; fi;
+    od;
+    if flag then 
+
+        LA := [op(Match[1]), op(-Match[1]), op(Match[1])];
+        LB := [op(Match[2]), op(-Match[2]), op(Match[2])];
+
+        LA := [seq(LA[nops(LA)-j-i+1],j=1..nops(Match[1]))];
+        LB := [seq(LB[nops(LB)-j-i+1],j=1..nops(Match[2]))];
+
+        RETURN([LA, LB]);
+    fi;
+
+    RETURN(Match);
+end:
+
+#stopat(ShiftP);
+
+Collect := proc(Set)
+    local S, S2, T;
+    S := Set;
+    S2 := {};
+
+    while S <> {} do
+        T := S[1][1];
+        S := map(y->ShiftP(y, S[1][1]), S);
+        S2 := select(y->y[1]=T, S) union S2;
+        S := remove(y->y[1]=T, S);
+        lprint(nops(S2));
+
+    od;
+    RETURN(S2);
+end:
+
+#stopat(Collect);
+
+Insert := proc(P, k, o)
+    local p1, p2, P1, P2, i;
+    P1 := P[1];
+    P2 := P[2];
+
+    if not(type(nops(P1)/k , integer)) or
+       not(type(nops(P2)/k , integer)) then ERROR("Goof"); fi;
+
+    p1 := NULL;
+    for i from 1 to nops(P1) do 
+        if (i = o) mod k then 
+            p1 := p1, 0;
+        fi;
+        p1 := p1, P1[i];
+    od;
+
+    p2 := NULL;
+    for i from 1 to nops(P2) do 
+        if (i = o) mod k then 
+            p2 := p2, 0;
+        fi;
+        p2 := p2, P2[i];
+    od;
+
+    RETURN([[p1], [p2]]);
+end:
+
+#stopat(SP);
+
+Merge := proc(S1, S2)
+    local s1, s2, s3, i, T, s;
+    if nops(S1) > nops(S2) then RETURN(Merge(S2, S1)); fi;
+
+    s2 := S2; s1 := S1;
+    s3 := map(y->AddS(y[1], y[2]), s2);
+
+    for i from 1 to nops(s1) do
+        s := s1[i];
+        T := CyclicShifts(s[1], s[2]);
+        T := map(y->AddS(y[1], y[2]), T);
+        if nops(T minus s3) = nops(T) then s2 := s2 union {s}; fi;
+        lprint(i, nops(s1), nops(s2));
+    od;
+        
+    RETURN(s2);
+end:
+
+
+#stopat(SP);
